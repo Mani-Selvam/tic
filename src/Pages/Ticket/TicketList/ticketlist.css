@@ -1,0 +1,45 @@
+.ticket-toolbar {
+    padding: 16px 20px;
+    border-bottom: 1px solid #f0f0f0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.filter-select {
+    padding: 9px 14px;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 10px;
+    font-size: 14px;
+    outline: none;
+    background: #f7fafc;
+    cursor: pointer;
+    transition: border-color 0.2s;
+}
+.filter-select:focus {
+    border-color: #667eea;
+    background: white;
+    box-shadow: 0 0 0 3px rgba(102,126,234,0.1);
+}
+
+.ticket-subject { font-weight: 500; color: #2d3748; font-size: 14px; }
+.ticket-desc { font-size: 12px; color: #718096; margin-top: 2px; }
+
+.ticket-badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.badge-high { background: #fff5f5; color: #c53030; }
+.badge-medium { background: #fffaf0; color: #c05621; }
+.badge-low { background: #f0fff4; color: #276749; }
+
+.badge-open { background: #ebf8ff; color: #2b6cb0; }
+.badge-closed { background: #f0fff4; color: #276749; }
+.badge-progress { background: #fffaf0; color: #c05621; }
+.badge-default-status { background: #f7fafc; color: #718096; }

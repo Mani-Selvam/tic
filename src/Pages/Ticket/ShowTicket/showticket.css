@@ -1,0 +1,57 @@
+.show-card {
+    background: white;
+    border-radius: 14px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    border: 1px solid #e9ecef;
+    padding: 28px;
+}
+
+.show-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 24px;
+}
+
+.show-field {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.show-label {
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #718096;
+}
+
+.show-value {
+    font-size: 15px;
+    color: #2d3748;
+    font-weight: 500;
+}
+
+.show-description {
+    padding-top: 20px;
+    border-top: 1px solid #f0f0f0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.description-text {
+    font-size: 14px;
+    color: #4a5568;
+    line-height: 1.7;
+    background: #f7fafc;
+    border-radius: 10px;
+    padding: 16px;
+    margin: 0;
+    border: 1px solid #e9ecef;
+}
+
+@media (max-width: 640px) {
+    .show-grid { grid-template-columns: 1fr; }
+}

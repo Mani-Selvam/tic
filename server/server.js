@@ -67,5 +67,5 @@ app.use("/api/approvals", approvalRoutes);
 app.use("/api/work-analysis", workAnalysisRoutes);
 app.use("/api/work-logs", workLogRoutes);
 const PORT = process.env.PORT || 3001;
-const HOST = process.env.NODE_ENV === "production" ? "0.0.0.0" : "localhost";
+const HOST = process.env.NODE_ENV === "production" ? "0.0.0.0" : "127.0.0.1";
 app.listen(PORT, HOST, () => console.log(`Server running on port ${PORT}`));

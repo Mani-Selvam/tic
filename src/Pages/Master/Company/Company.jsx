@@ -10,6 +10,7 @@ const columns = [
 ];
 
 const formFields = [
+    { name: "code", label: "Company Code", type: "text", placeholder: "Enter company code (e.g. ACME)" },
     { name: "name", label: "Company Name", type: "text", placeholder: "Enter company name" },
     { name: "email", label: "Email", type: "email", placeholder: "Enter email address" },
     { name: "phone", label: "Phone", type: "tel", placeholder: "Enter phone number" },

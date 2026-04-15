@@ -100,7 +100,7 @@ const TicketList = () => {
                         onChange={e => setFilters(f => ({ ...f, priority: e.target.value }))}
                     >
                         <option value="">All Priorities</option>
-                        {priorities.map(p => <option key={p.id} value={String(p.id)}>{p.name}</option>)}
+                        {priorities.map(p => <option key={p._id} value={String(p._id)}>{p.name}</option>)}
                     </select>
                     <select
                         className="filter-select"
@@ -108,7 +108,7 @@ const TicketList = () => {
                         onChange={e => setFilters(f => ({ ...f, status: e.target.value }))}
                     >
                         <option value="">All Statuses</option>
-                        {statuses.map(s => <option key={s.id} value={String(s.id)}>{s.name}</option>)}
+                        {statuses.map(s => <option key={s._id} value={String(s._id)}>{s.name}</option>)}
                     </select>
                 </div>
 
@@ -135,8 +135,8 @@ const TicketList = () => {
                             </thead>
                             <tbody>
                                 {filtered.map((ticket, i) => (
-                                    <tr key={ticket.id || i}>
-                                        <td>{ticket.id || i + 1}</td>
+                                    <tr key={ticket._id || i}>
+                                        <td>{ticket.ticket_id || i + 1}</td>
                                         <td>
                                             <div className="ticket-subject">{ticket.subject || ticket.title || '-'}</div>
                                             {ticket.description && (
@@ -154,14 +154,14 @@ const TicketList = () => {
                                                 {ticket.status?.name || ticket.status || '-'}
                                             </span>
                                         </td>
-                                        <td>{ticket.assigned_to?.name || ticket.assignee?.name || '-'}</td>
-                                        <td>{ticket.created_at ? new Date(ticket.created_at).toLocaleDateString() : '-'}</td>
+                                        <td>{Array.isArray(ticket.assigned_to) ? ticket.assigned_to.map(u => u?.name).filter(Boolean).join(', ') || '-' : (ticket.assigned_to?.name || '-')}</td>
+                                        <td>{ticket.createdAt ? new Date(ticket.createdAt).toLocaleDateString() : '-'}</td>
                                         <td>
                                             <div className="action-btns">
-                                                <button className="action-btn edit-btn" onClick={() => navigate('/ticket/show-ticket', { state: { ticket } })} title="View">
+                                                <button className="action-btn edit-btn" onClick={() => navigate('/ticket/show-ticket', { state: { ticket } })} title="View" >
                                                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
                                                 </button>
-                                                <button className="action-btn delete-btn" onClick={() => setDeleteConfirm(ticket.id)} title="Delete">
+                                                <button className="action-btn delete-btn" onClick={() => setDeleteConfirm(ticket._id)} title="Delete">
                                                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/></svg>
                                                 </button>
                                             </div>

@@ -2,13 +2,14 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { createTicket } from "@/Api/TicketApi/ticketAPI";
 import { companyAPI, priorityAPI, ticketStatusAPI, userAPI, departmentAPI } from "@/Api/MasterApi/masterAPI";
+import { getCurrentUser } from "@/Components/Login/loginAPI";
 import "@/Components/MasterDash/master.css";
 import "./createticket.css";
 
 const CreateTicket = () => {
     const navigate = useNavigate();
     const [form, setForm] = useState({
-        subject: "", description: "", company_id: "", priority_id: "",
+        title: "", description: "", company_id: "", priority_id: "",
         status_id: "", assigned_to: "", department_id: "",
     });
     const [companies, setCompanies] = useState([]);
@@ -34,11 +35,17 @@ const CreateTicket = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (!form.subject.trim()) { setError("Subject is required"); return; }
+        if (!form.title.trim()) { setError("Subject is required"); return; }
         setSaving(true);
         setError("");
         try {
-            await createTicket(form);
+            const currentUser = getCurrentUser();
+            const payload = {
+                ...form,
+                raised_by: currentUser?.id || currentUser?._id || "",
+                assigned_to: form.assigned_to ? [form.assigned_to] : [],
+            };
+            await createTicket(payload);
             navigate("/ticket/ticket");
         } catch (err) {
             setError(err.message || "Failed to create ticket");
@@ -68,8 +75,8 @@ const CreateTicket = () => {
                             <input
                                 type="text"
                                 className="form-control"
-                                value={form.subject}
-                                onChange={e => set('subject', e.target.value)}
+                                value={form.title}
+                                onChange={e => set('title', e.target.value)}
                                 placeholder="Enter ticket subject"
                                 required
                             />
@@ -78,7 +85,7 @@ const CreateTicket = () => {
                             <label className="form-label">Company</label>
                             <select className="form-control" value={form.company_id} onChange={e => set('company_id', e.target.value)}>
                                 <option value="">Select Company</option>
-                                {companies.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
+                                {companies.map(c => <option key={c._id} value={c._id}>{c.name}</option>)}
                             </select>
                         </div>
                     </div>
@@ -87,14 +94,14 @@ const CreateTicket = () => {
                             <label className="form-label">Priority</label>
                             <select className="form-control" value={form.priority_id} onChange={e => set('priority_id', e.target.value)}>
                                 <option value="">Select Priority</option>
-                                {priorities.map(p => <option key={p.id} value={p.id}>{p.name}</option>)}
+                                {priorities.map(p => <option key={p._id} value={p._id}>{p.name}</option>)}
                             </select>
                         </div>
                         <div className="form-group">
                             <label className="form-label">Status</label>
                             <select className="form-control" value={form.status_id} onChange={e => set('status_id', e.target.value)}>
                                 <option value="">Select Status</option>
-                                {statuses.map(s => <option key={s.id} value={s.id}>{s.name}</option>)}
+                                {statuses.map(s => <option key={s._id} value={s._id}>{s.name}</option>)}
                             </select>
                         </div>
                     </div>
@@ -103,14 +110,14 @@ const CreateTicket = () => {
                             <label className="form-label">Assign To</label>
                             <select className="form-control" value={form.assigned_to} onChange={e => set('assigned_to', e.target.value)}>
                                 <option value="">Select User</option>
-                                {users.map(u => <option key={u.id} value={u.id}>{u.name}</option>)}
+                                {users.map(u => <option key={u._id} value={u._id}>{u.name}</option>)}
                             </select>
                         </div>
                         <div className="form-group">
                             <label className="form-label">Department</label>
                             <select className="form-control" value={form.department_id} onChange={e => set('department_id', e.target.value)}>
                                 <option value="">Select Department</option>
-                                {departments.map(d => <option key={d.id} value={d.id}>{d.name}</option>)}
+                                {departments.map(d => <option key={d._id} value={d._id}>{d.name}</option>)}
                             </select>
                         </div>
                     </div>

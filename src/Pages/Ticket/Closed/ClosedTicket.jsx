@@ -14,7 +14,7 @@ const ClosedTicket = () => {
             .then(res => {
                 const all = Array.isArray(res) ? res : (res?.data ?? []);
                 const closed = all.filter(t => {
-                    const s = (t.status?.name || t.status || '').toLowerCase();
+                    const s = (t.status_id?.name || t.status?.name || t.status || '').toLowerCase();
                     return s === 'closed' || s === 'resolved' || s === 'done';
                 });
                 setTickets(closed);
@@ -70,17 +70,17 @@ const ClosedTicket = () => {
                             </thead>
                             <tbody>
                                 {filtered.map((ticket, i) => (
-                                    <tr key={ticket.id || i}>
-                                        <td>{ticket.id || i + 1}</td>
-                                        <td>{ticket.subject || ticket.title || '-'}</td>
-                                        <td>{ticket.company?.name || '-'}</td>
+                                    <tr key={ticket._id || i}>
+                                        <td style={{ fontWeight:600, color:"#667eea", fontSize:12 }}>{ticket.ticket_id || i + 1}</td>
+                                        <td>{ticket.title || '-'}</td>
+                                        <td>{ticket.company_id?.name || '-'}</td>
                                         <td>
                                             <span className="ticket-badge badge-low">
-                                                {ticket.priority?.name || ticket.priority || '-'}
+                                                {ticket.priority_id?.name || '-'}
                                             </span>
                                         </td>
-                                        <td>{ticket.closed_by?.name || ticket.assigned_to?.name || '-'}</td>
-                                        <td>{ticket.updated_at ? new Date(ticket.updated_at).toLocaleDateString() : '-'}</td>
+                                        <td>{ticket.raised_by?.name || '-'}</td>
+                                        <td>{ticket.closed_at ? new Date(ticket.closed_at).toLocaleDateString() : (ticket.updatedAt ? new Date(ticket.updatedAt).toLocaleDateString() : '-')}</td>
                                     </tr>
                                 ))}
                             </tbody>

@@ -28,14 +28,7 @@ const app = express();
 // Middleware
 app.use(
     cors({
-        origin: [
-            "http://localhost:5173",
-            "https://localhost:5173",
-            "http://127.0.0.1:5173",
-            "https://127.0.0.1:5173",
-            "https://neophrondev.in/neoticketsystem/",
-            "http://neophrondev.in/neoticketsystem/",
-        ],
+        origin: true,
         methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
         allowedHeaders: ["Content-Type", "Authorization"],
         credentials: true,
@@ -47,10 +40,19 @@ app.use(
 app.use(express.json());
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
-app.get("/", (req, res) => {
-    res.set("Content-Type", "text/html; charset=utf-8");
-    res.send("<h2>API is running successfully on cPanel</h2>");
-});
+// Serve frontend in production
+if (process.env.NODE_ENV === "production") {
+    const distPath = path.join(__dirname, "../dist");
+    app.use(express.static(distPath));
+    app.get("*", (req, res) => {
+        res.sendFile(path.join(distPath, "index.html"));
+    });
+} else {
+    app.get("/", (req, res) => {
+        res.set("Content-Type", "text/html; charset=utf-8");
+        res.send("<h2>API is running successfully</h2>");
+    });
+}
 
 // Routes
 app.use("/api/companies", companyRoutes);
@@ -64,5 +66,6 @@ app.use("/api/tickets", ticketRoutes);
 app.use("/api/approvals", approvalRoutes);
 app.use("/api/work-analysis", workAnalysisRoutes);
 app.use("/api/work-logs", workLogRoutes);
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+const PORT = process.env.PORT || 3001;
+const HOST = process.env.NODE_ENV === "production" ? "0.0.0.0" : "localhost";
+app.listen(PORT, HOST, () => console.log(`Server running on port ${PORT}`));

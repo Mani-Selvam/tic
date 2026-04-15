@@ -1,4 +1,4 @@
-const API_BASE_URL = import.meta.env.VITE_API_URL || "https://neoticketsystem.neophrondev.in";
+const API_BASE_URL = import.meta.env.VITE_API_URL || "";
 const API_VERSION = "api";
 
 export const API_ENDPOINTS = {

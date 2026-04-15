@@ -2,11 +2,16 @@ import React from "react";
 import MasterPage from "@/Components/MasterDash/MasterPage";
 import { userAPI } from "@/Api/MasterApi/masterAPI";
 
+const STATUS_OPTIONS = [
+    { value: "Active", label: "Active" },
+    { value: "Inactive", label: "Inactive" },
+];
+
 const columns = [
     { key: "name", label: "Name" },
     { key: "email", label: "Email" },
     { key: "mobile", label: "Mobile" },
-    { key: "role", label: "Role" },
+    { key: "status", label: "Status" },
 ];
 
 const formFields = [
@@ -14,11 +19,7 @@ const formFields = [
     { name: "email", label: "Email", type: "email", placeholder: "Enter email address" },
     { name: "mobile", label: "Mobile", type: "tel", placeholder: "Enter mobile number" },
     { name: "password", label: "Password", type: "password", placeholder: "Enter password" },
-    { name: "role", label: "Role", type: "select", options: [
-        { value: "admin", label: "Admin" },
-        { value: "user", label: "User" },
-        { value: "worker", label: "Worker" },
-    ]},
+    { name: "status", label: "Status", type: "select", options: STATUS_OPTIONS, default: "Active" },
 ];
 
 const User = () => (

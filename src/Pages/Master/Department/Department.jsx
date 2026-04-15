@@ -2,14 +2,19 @@ import React from "react";
 import MasterPage from "@/Components/MasterDash/MasterPage";
 import { departmentAPI } from "@/Api/MasterApi/masterAPI";
 
+const STATUS_OPTIONS = [
+    { value: "Active", label: "Active" },
+    { value: "Inactive", label: "Inactive" },
+];
+
 const columns = [
     { key: "name", label: "Department Name" },
-    { key: "description", label: "Description" },
+    { key: "status", label: "Status" },
 ];
 
 const formFields = [
-    { name: "name", label: "Department Name", type: "text", placeholder: "Enter department name" },
-    { name: "description", label: "Description", type: "textarea", placeholder: "Enter description" },
+    { name: "name", label: "Department Name", type: "text", placeholder: "Engineering" },
+    { name: "status", label: "Status", type: "select", options: STATUS_OPTIONS, default: "Active" },
 ];
 
 const Department = () => (

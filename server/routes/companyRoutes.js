@@ -22,7 +22,7 @@ router.post("/", upload.single("logo"), async (req, res) => {
 
         let logoUrl = "";
         if (req.file) {
-            logoUrl = `${process.env.API_URL}/uploads/${req.file.filename}`;
+            logoUrl = `/uploads/${req.file.filename}`;
         }
 
         const newCompany = new Company({
@@ -50,7 +50,7 @@ router.put("/:id", upload.single("logo"), async (req, res) => {
 
         let logoUrl = undefined;
         if (req.file) {
-            logoUrl = `${process.env.API_URL}/uploads/${req.file.filename}`;
+            logoUrl = `/uploads/${req.file.filename}`;
         }
 
         const updateData = {

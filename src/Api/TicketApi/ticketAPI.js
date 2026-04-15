@@ -25,12 +25,16 @@ export const getTickets = (params = {}) => {
 export const getTicketById = (id) =>
     fetch(`${API_ENDPOINTS.TICKETS}/${id}`, { headers: getAuthHeaders() }).then(handleResponse);
 
-export const createTicket = (data) =>
-    fetch(API_ENDPOINTS.TICKETS, {
+export const createTicket = (data) => {
+    const isFormData = data instanceof FormData;
+    const headers = getAuthHeaders();
+    if (isFormData) delete headers["Content-Type"];
+    return fetch(API_ENDPOINTS.TICKETS, {
         method: "POST",
-        headers: getAuthHeaders(),
-        body: JSON.stringify(data),
+        headers,
+        body: isFormData ? data : JSON.stringify(data),
     }).then(handleResponse);
+};
 
 export const updateTicket = (id, data) =>
     fetch(`${API_ENDPOINTS.TICKETS}/${id}`, {

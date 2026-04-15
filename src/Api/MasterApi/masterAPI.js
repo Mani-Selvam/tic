@@ -16,10 +16,24 @@ const handleResponse = async (res) => {
     return res.json();
 };
 
+const buildHeaders = (data) => {
+    const headers = getAuthHeaders();
+    if (data instanceof FormData) delete headers["Content-Type"];
+    return headers;
+};
+
 const crudApi = (endpoint) => ({
     getAll: () => fetch(endpoint, { headers: getAuthHeaders() }).then(handleResponse),
-    create: (data) => fetch(endpoint, { method: "POST", headers: getAuthHeaders(), body: JSON.stringify(data) }).then(handleResponse),
-    update: (id, data) => fetch(`${endpoint}/${id}`, { method: "PUT", headers: getAuthHeaders(), body: JSON.stringify(data) }).then(handleResponse),
+    create: (data) => fetch(endpoint, {
+        method: "POST",
+        headers: buildHeaders(data),
+        body: data instanceof FormData ? data : JSON.stringify(data),
+    }).then(handleResponse),
+    update: (id, data) => fetch(`${endpoint}/${id}`, {
+        method: "PUT",
+        headers: buildHeaders(data),
+        body: data instanceof FormData ? data : JSON.stringify(data),
+    }).then(handleResponse),
     delete: (id) => fetch(`${endpoint}/${id}`, { method: "DELETE", headers: getAuthHeaders() }).then(handleResponse),
     getById: (id) => fetch(`${endpoint}/${id}`, { headers: getAuthHeaders() }).then(handleResponse),
 });

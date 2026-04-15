@@ -30,7 +30,7 @@ const MasterPage = ({
     api,
     columns,
     formFields,
-    rowKey = "id",
+    rowKey = "_id",
     searchKey = "name",
 }) => {
     const [data, setData] = useState([]);
@@ -39,6 +39,7 @@ const MasterPage = ({
     const [search, setSearch] = useState("");
     const [modal, setModal] = useState(null);
     const [form, setForm] = useState({});
+    const [files, setFiles] = useState({});
     const [saving, setSaving] = useState(false);
     const [deleteConfirm, setDeleteConfirm] = useState(null);
 
@@ -56,17 +57,27 @@ const MasterPage = ({
 
     useEffect(() => { load(); }, []);
 
+    const hasFileFields = formFields.some(f => f.type === "file");
+
     const openAdd = () => {
         const defaults = {};
-        formFields.forEach(f => { defaults[f.name] = ""; });
+        formFields.forEach(f => {
+            if (f.type === "file") return;
+            defaults[f.name] = f.default ?? "";
+        });
         setForm(defaults);
+        setFiles({});
         setModal("add");
     };
 
     const openEdit = (row) => {
         const vals = {};
-        formFields.forEach(f => { vals[f.name] = row[f.name] ?? ""; });
+        formFields.forEach(f => {
+            if (f.type === "file") return;
+            vals[f.name] = row[f.name] ?? "";
+        });
         setForm({ ...vals, _id: row[rowKey] });
+        setFiles({});
         setModal("edit");
     };
 
@@ -74,10 +85,19 @@ const MasterPage = ({
         setSaving(true);
         try {
             const { _id, ...payload } = form;
-            if (modal === "add") {
-                await api.create(payload);
+            let submitData;
+            if (hasFileFields) {
+                const fd = new FormData();
+                Object.entries(payload).forEach(([k, v]) => { if (v !== "" && v != null) fd.append(k, v); });
+                Object.entries(files).forEach(([k, v]) => { if (v) fd.append(k, v); });
+                submitData = fd;
             } else {
-                await api.update(_id, payload);
+                submitData = payload;
+            }
+            if (modal === "add") {
+                await api.create(submitData);
+            } else {
+                await api.update(_id, submitData);
             }
             setModal(null);
             load();
@@ -173,7 +193,7 @@ const MasterPage = ({
             </div>
 
             {modal && (
-                <Modal title={modal === "add" ? `Add ${title.split(' ')[0]}` : `Edit ${title.split(' ')[0]}`} onClose={() => setModal(null)}>
+                <Modal title={modal === "add" ? `Add New ${title.replace(' Master', '').replace(' Directory', '')}` : `Edit ${title.replace(' Master', '').replace(' Directory', '')}`} onClose={() => setModal(null)}>
                     {formFields.map(f => (
                         <div key={f.name} className="form-group">
                             <label className="form-label">{f.label}</label>
@@ -196,6 +216,30 @@ const MasterPage = ({
                                     onChange={e => setForm(prev => ({ ...prev, [f.name]: e.target.value }))}
                                     placeholder={f.placeholder || f.label}
                                 />
+                            ) : f.type === "color" ? (
+                                <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                                    <input
+                                        type="color"
+                                        style={{ width: 44, height: 36, padding: 2, border: "1px solid #e2e8f0", borderRadius: 6, cursor: "pointer" }}
+                                        value={form[f.name] || "#000000"}
+                                        onChange={e => setForm(prev => ({ ...prev, [f.name]: e.target.value }))}
+                                    />
+                                    <input
+                                        type="text"
+                                        className="form-control"
+                                        style={{ flex: 1 }}
+                                        value={form[f.name] || "#000000"}
+                                        onChange={e => setForm(prev => ({ ...prev, [f.name]: e.target.value }))}
+                                        placeholder="#000000"
+                                    />
+                                </div>
+                            ) : f.type === "file" ? (
+                                <input
+                                    type="file"
+                                    className="form-control"
+                                    accept={f.accept || "image/*"}
+                                    onChange={e => setFiles(prev => ({ ...prev, [f.name]: e.target.files[0] || null }))}
+                                />
                             ) : (
                                 <input
                                     type={f.type || "text"}
@@ -216,7 +260,7 @@ const MasterPage = ({
                 </Modal>
             )}
 
-            {deleteConfirm !== null && (
+            {deleteConfirm != null && (
                 <Modal title="Confirm Delete" onClose={() => setDeleteConfirm(null)}>
                     <p style={{ marginBottom: 24, color: '#4a5568' }}>
                         Are you sure you want to delete this record? This action cannot be undone.

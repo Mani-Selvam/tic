@@ -28,35 +28,36 @@
     box-shadow: 0 0 0 3px rgba(99,102,241,0.1);
 }
 
+/* ── Ticket cell content ── */
 .ticket-subject { font-weight: 600; color: #1e293b; font-size: 13.5px; line-height: 1.3; }
 .ticket-desc {
     font-size: 12px; color: #94a3b8; margin-top: 3px; line-height: 1.4;
     white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 220px;
 }
 
+/* ── Badges ── */
 .ticket-badge {
     display: inline-flex; align-items: center;
     padding: 3px 10px; border-radius: 20px;
     font-size: 12px; font-weight: 600; white-space: nowrap;
 }
+.badge-priority-high, .badge-high  { background: #fef2f2; color: #dc2626; }
+.badge-urgent                       { background: #fff1f2; color: #be123c; }
+.badge-priority-med,  .badge-medium { background: #fffbeb; color: #d97706; }
+.badge-priority-low,  .badge-low    { background: #f0fdf4; color: #16a34a; }
+.badge-status, .badge-open          { background: #eff6ff; color: #2563eb; }
+.badge-closed                       { background: #f0fdf4; color: #15803d; }
+.badge-progress                     { background: #fef3c7; color: #d97706; }
+.badge-pending                      { background: #fffbeb; color: #d97706; }
+.badge-approved                     { background: #f0fdf4; color: #15803d; }
+.badge-rejected                     { background: #fef2f2; color: #dc2626; }
+.badge-default-status               { background: #f8fafc; color: #64748b; }
 
-.badge-priority-high, .badge-high { background: #fef2f2; color: #dc2626; }
-.badge-urgent { background: #fff1f2; color: #be123c; }
-.badge-priority-med, .badge-medium { background: #fffbeb; color: #d97706; }
-.badge-priority-low, .badge-low { background: #f0fdf4; color: #16a34a; }
-.badge-status, .badge-open { background: #eff6ff; color: #2563eb; }
-.badge-closed { background: #f0fdf4; color: #15803d; }
-.badge-progress { background: #fef3c7; color: #d97706; }
-.badge-pending { background: #fffbeb; color: #d97706; }
-.badge-approved { background: #f0fdf4; color: #15803d; }
-.badge-rejected { background: #fef2f2; color: #dc2626; }
-.badge-default-status { background: #f8fafc; color: #64748b; }
-
-/* Approve action button */
+/* ── Action buttons ── */
 .approve-btn { background: #fdf4ff; color: #9333ea; }
 .approve-btn:hover { background: #f3e8ff; color: #7e22ce; transform: scale(1.05); }
 
-/* Inline Create Panel */
+/* ── Create Panel ── */
 .create-panel {
     background: white;
     border-radius: 18px;
@@ -68,7 +69,7 @@
 }
 @keyframes slideDown {
     from { opacity: 0; transform: translateY(-10px) scale(0.98); }
-    to { opacity: 1; transform: translateY(0) scale(1); }
+    to   { opacity: 1; transform: translateY(0)    scale(1);    }
 }
 
 .create-panel-hdr {
@@ -95,30 +96,31 @@
     background: #fafbff;
 }
 
-/* ── Approval Modal ── */
-.approval-modal { max-width: 540px; }
+/* ════════════════════════════════════════
+   APPROVAL MODAL
+════════════════════════════════════════ */
+.approval-modal { max-width: 560px; }
 
 .approval-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 16px;
-    margin-bottom: 18px;
+    margin-bottom: 20px;
 }
 
-.form-hint { font-size: 11.5px; color: #94a3b8; margin-top: 5px; }
-
-.form-error { font-size: 13px; color: #dc2626; font-weight: 500; margin-top: 6px; }
+.form-hint  { font-size: 11.5px; color: #94a3b8; margin-top: 5px; }
+.form-error { font-size: 13px;   color: #dc2626; font-weight: 500; margin-top: 6px; }
 
 /* Approval Status Toggle */
 .approval-toggle {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 10px;
+    gap: 12px;
 }
 
 .approval-toggle-btn {
     display: flex; align-items: center; justify-content: center; gap: 8px;
-    padding: 13px 16px;
+    padding: 14px 16px;
     border: 2px solid #e5e7eb;
     border-radius: 12px;
     background: white;
@@ -127,109 +129,129 @@
     cursor: pointer;
     transition: all 0.2s;
 }
+.approval-toggle-btn:hover         { border-color: #d1d5db; background: #f9fafb; }
+.approval-toggle-btn.toggle-approved { border-color: #6366f1; background: #eef2ff; color: #4338ca; }
+.approval-toggle-btn.toggle-rejected { border-color: #ef4444; background: #fef2f2; color: #dc2626; }
 
-.approval-toggle-btn:hover {
-    border-color: #d1d5db;
-    background: #f9fafb;
-}
-
-.approval-toggle-btn.toggle-approved {
-    border-color: #6366f1;
-    background: #eef2ff;
-    color: #4338ca;
-}
-
-.approval-toggle-btn.toggle-rejected {
-    border-color: #ef4444;
-    background: #fef2f2;
-    color: #dc2626;
-}
-
-/* ── Multi-Select Dropdown ── */
-.ms-root {
-    position: relative;
-}
+/* ════════════════════════════════════════
+   MULTI-SELECT  (card grid layout)
+════════════════════════════════════════ */
+.ms-root { position: relative; }
 
 .ms-control {
     display: flex; align-items: center; justify-content: space-between;
-    padding: 10px 14px;
+    padding: 11px 14px;
     border: 1.5px solid #e5e7eb;
     border-radius: 10px;
     background: #f9fafb;
     cursor: pointer;
     transition: all 0.2s;
-    min-height: 42px;
+    min-height: 44px;
     gap: 8px;
 }
-
-.ms-control:hover, .ms-control.ms-open {
+.ms-control:hover,
+.ms-control.ms-open {
     border-color: #6366f1;
     background: white;
     box-shadow: 0 0 0 3px rgba(99,102,241,0.1);
 }
 
-.ms-value {
-    font-size: 14px; color: #111827; flex: 1;
-    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-}
-
+.ms-value       { font-size: 14px; color: #111827; flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .ms-placeholder { color: #9ca3af; }
 
+/* ── Dropdown panel ── */
 .ms-dropdown {
     position: absolute;
-    top: calc(100% + 6px);
+    top: calc(100% + 8px);
     left: 0; right: 0;
     background: white;
     border: 1.5px solid #e5e7eb;
-    border-radius: 12px;
-    box-shadow: 0 8px 32px rgba(0,0,0,0.12);
-    z-index: 500;
-    max-height: 220px;
-    overflow-y: auto;
-    padding: 6px;
+    border-radius: 14px;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.12);
+    z-index: 600;
+    padding: 12px;
     animation: dropIn 0.15s ease;
 }
-
 @keyframes dropIn {
     from { opacity: 0; transform: translateY(-6px); }
-    to { opacity: 1; transform: translateY(0); }
+    to   { opacity: 1; transform: translateY(0);     }
 }
 
-.ms-empty {
-    padding: 16px;
-    text-align: center;
-    color: #94a3b8;
-    font-size: 13px;
-}
+.ms-empty { padding: 20px; text-align: center; color: #94a3b8; font-size: 13px; }
 
-.ms-option {
-    display: flex; align-items: center; gap: 10px;
-    padding: 9px 12px;
-    border-radius: 8px;
+/* ── Card grid inside dropdown ── */
+.ms-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+    gap: 10px;
+    max-height: 260px;
+    overflow-y: auto;
+}
+.ms-grid::-webkit-scrollbar { width: 4px; }
+.ms-grid::-webkit-scrollbar-thumb { background: #e2e8f0; border-radius: 4px; }
+
+/* ── Individual agent card ── */
+.ms-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 12px 8px 10px;
+    border: 1.5px solid #f1f5f9;
+    border-radius: 12px;
     cursor: pointer;
-    transition: background 0.15s;
-    font-size: 14px; color: #374151;
+    transition: all 0.18s;
+    background: white;
     user-select: none;
+    gap: 6px;
+    position: relative;
+}
+.ms-card:hover        { border-color: #c7d2fe; background: #f5f3ff; }
+.ms-card-selected     { border-color: #6366f1; background: #eef2ff; }
+
+/* checkbox top-left */
+.ms-card-check {
+    position: absolute;
+    top: 8px; left: 8px;
+}
+.ms-checkbox {
+    width: 18px; height: 18px;
+    border-radius: 5px;
+    border: 2px solid #d1d5db;
+    background: white;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.15s;
+}
+.ms-checked {
+    border-color: #6366f1;
+    background: #6366f1;
 }
 
-.ms-option:hover { background: #f5f3ff; }
-.ms-option.ms-selected { background: #eef2ff; color: #4338ca; font-weight: 500; }
-
-.ms-avatar {
-    width: 26px; height: 26px;
-    border-radius: 7px;
+/* avatar */
+.ms-card-avatar {
+    width: 44px; height: 44px;
+    border-radius: 12px;
     background: linear-gradient(135deg, #6366f1, #8b5cf6);
     color: white;
     display: flex; align-items: center; justify-content: center;
-    font-size: 11px; font-weight: 700;
+    font-size: 18px; font-weight: 700;
+    margin-top: 4px;
     flex-shrink: 0;
 }
+.ms-card-selected .ms-card-avatar { box-shadow: 0 0 0 3px rgba(99,102,241,0.3); }
 
-.ms-name { flex: 1; }
+/* name */
+.ms-card-name {
+    font-size: 12px; font-weight: 600;
+    color: #374151; text-align: center;
+    line-height: 1.3;
+    word-break: break-word;
+}
+.ms-card-selected .ms-card-name { color: #4338ca; }
 
+/* ── Responsive ── */
 @media (max-width: 640px) {
-    .cp-grid { grid-template-columns: 1fr; }
-    .create-panel-hdr { flex-direction: column; align-items: flex-start; gap: 10px; }
-    .approval-grid { grid-template-columns: 1fr; }
+    .cp-grid        { grid-template-columns: 1fr; }
+    .approval-grid  { grid-template-columns: 1fr; }
     .approval-toggle { grid-template-columns: 1fr; }
+    .ms-grid        { grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); }
 }

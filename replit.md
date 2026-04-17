@@ -32,7 +32,7 @@ A full-stack ticket management system built with the MERN stack (MongoDB, Expres
 
 ## Running the Application
 
-The `Start application` workflow runs `bash start.sh` which:
+The `Start application` workflow runs `node server/server.js & npm run dev` which:
 1. Starts the Express backend on port 3001 (localhost only)
 2. Starts the Vite dev server on port 5000 (proxies /api and /uploads to backend)
 

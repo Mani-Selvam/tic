@@ -125,6 +125,21 @@
     align-items: center;
 }
 
+.password-toggle {
+    left: unset;
+    right: 14px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    color: #94a3b8;
+    transition: color 0.2s;
+}
+
+.password-toggle:hover {
+    color: #6366f1;
+}
+
 .form-options {
     display: flex;
     justify-content: space-between;

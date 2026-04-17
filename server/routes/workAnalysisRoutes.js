@@ -9,6 +9,22 @@ import upload from "../middleware/upload.js";
 
 const router = express.Router();
 
+// @route   GET /api/work-analysis/ticket/:ticketId
+// @desc    Get Work Analysis for a specific ticket
+// @Access  Private
+router.get("/ticket/:ticketId", auth, async (req, res) => {
+    try {
+        const WorkAnalysis = (await import("../models/WorkAnalysis.js")).default;
+        const analyses = await WorkAnalysis.find({ ticket_id: req.params.ticketId })
+            .populate("ticket_id", "ticket_id title")
+            .populate("approved_by", "name email")
+            .sort({ createdAt: -1 });
+        res.json(analyses);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+});
+
 // @route   GET /api/work-analysis/worker
 // @desc    Get Work Analysis for Current Worker Only
 // @Access  Private

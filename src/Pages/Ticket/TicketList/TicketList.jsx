@@ -5,6 +5,8 @@ import {
     deleteTicket,
     createTicket,
     updateTicket,
+    getWorkAnalysisByTicket,
+    approveWorkAnalysis,
 } from "@/Api/TicketApi/ticketAPI";
 import {
     companyAPI,
@@ -129,6 +131,12 @@ const CloseIcon = () => (
         <line x1="6" y1="6" x2="18" y2="18"/>
     </svg>
 );
+const MaterialApproveIcon = () => (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+        <path d="M9 12l2 2 4-4"/>
+        <path d="M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0z"/>
+    </svg>
+);
 
 /* ─────────────────────────────────────────────
    DEFAULT / RESET VALUES
@@ -184,6 +192,9 @@ const TicketList = () => {
 
     /* delete confirm */
     const [deleteConfirm, setDeleteConfirm] = useState(null);
+
+    /* material approve */
+    const [materialApproving, setMaterialApproving] = useState(null);
 
     /* ── Load tickets + master data ── */
     const load = useCallback(() => {
@@ -312,6 +323,38 @@ const TicketList = () => {
             setApprovalError(err.message || "Save failed");
         } finally {
             setApproving(false);
+        }
+    };
+
+    /* ── Material Approve ── */
+    const handleMaterialApprove = async (ticket) => {
+        if (materialApproving === ticket._id) return;
+        setMaterialApproving(ticket._id);
+        try {
+            // Try to find and approve the work analysis for this ticket
+            const analyses = await getWorkAnalysisByTicket(ticket._id);
+            const pending = Array.isArray(analyses)
+                ? analyses.find(a => a.approval_status === "Pending" || a.material_required === "Yes")
+                : null;
+            if (pending) {
+                await approveWorkAnalysis(pending._id, "Approved");
+            } else {
+                // No work analysis — directly update the ticket status
+                const materialApprovedStatus = statuses.find(s =>
+                    (s.name || "").toLowerCase() === "material approved"
+                );
+                if (materialApprovedStatus) {
+                    await updateTicket(ticket._id, {
+                        status_id: materialApprovedStatus._id,
+                        status: "Material Approved",
+                    });
+                }
+            }
+            load();
+        } catch (err) {
+            alert(err.message || "Material approval failed");
+        } finally {
+            setMaterialApproving(null);
         }
     };
 
@@ -553,6 +596,17 @@ const TicketList = () => {
                                                     <button className="action-btn view-btn" title="View" onClick={() => navigate("/ticket/show-ticket", { state: { ticket } })}><ViewIcon /></button>
                                                     <button className="action-btn edit-btn" title="Edit" onClick={() => navigate("/ticket/create-ticket", { state: { ticket, isEdit: true } })}><EditIcon /></button>
                                                     <button className="action-btn approve-btn" title="Approve / Assign" onClick={() => openApproval(ticket)}><ApproveIcon /></button>
+                                                    {(ticket.status_id?.name || "").toLowerCase() === "material request" && (
+                                                        <button
+                                                            className="action-btn"
+                                                            title="Approve Material Request"
+                                                            disabled={materialApproving === ticket._id}
+                                                            onClick={() => handleMaterialApprove(ticket)}
+                                                            style={{ background: "#f0fdf4", color: "#15803d", border: "1px solid #bbf7d0" }}
+                                                        >
+                                                            {materialApproving === ticket._id ? "…" : <MaterialApproveIcon />}
+                                                        </button>
+                                                    )}
                                                     <button className="action-btn delete-btn" title="Delete" onClick={() => setDeleteConfirm(ticket._id)}><DeleteIcon /></button>
                                                 </div>
                                             </td>
@@ -638,6 +692,17 @@ const TicketList = () => {
                                         <button className="action-btn view-btn" title="View" onClick={() => navigate("/ticket/show-ticket", { state: { ticket } })}><ViewIcon /></button>
                                         <button className="action-btn edit-btn" title="Edit" onClick={() => navigate("/ticket/create-ticket", { state: { ticket, isEdit: true } })}><EditIcon /></button>
                                         <button className="action-btn approve-btn" title="Approve / Assign" onClick={() => openApproval(ticket)}><ApproveIcon /></button>
+                                        {(ticket.status_id?.name || "").toLowerCase() === "material request" && (
+                                            <button
+                                                className="action-btn"
+                                                title="Approve Material Request"
+                                                disabled={materialApproving === ticket._id}
+                                                onClick={() => handleMaterialApprove(ticket)}
+                                                style={{ background: "#f0fdf4", color: "#15803d", border: "1px solid #bbf7d0" }}
+                                            >
+                                                {materialApproving === ticket._id ? "…" : <MaterialApproveIcon />}
+                                            </button>
+                                        )}
                                         <button className="action-btn delete-btn" title="Delete" onClick={() => setDeleteConfirm(ticket._id)}><DeleteIcon /></button>
                                     </div>
                                 </div>

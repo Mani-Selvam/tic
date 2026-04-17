@@ -76,3 +76,15 @@ export const getMaterialApprovedWorkAnalysis = () => {
         headers: getAuthHeaders(),
     }).then(handleResponse);
 };
+
+export const getWorkAnalysisByTicket = (ticketId) =>
+    fetch(`${API_ENDPOINTS.WORK_ANALYSIS}/ticket/${ticketId}`, {
+        headers: getAuthHeaders(),
+    }).then(handleResponse);
+
+export const approveWorkAnalysis = (analysisId, approval_status = "Approved") =>
+    fetch(`${API_ENDPOINTS.WORK_ANALYSIS}/${analysisId}/approve`, {
+        method: "PUT",
+        headers: getAuthHeaders(),
+        body: JSON.stringify({ approval_status }),
+    }).then(handleResponse);

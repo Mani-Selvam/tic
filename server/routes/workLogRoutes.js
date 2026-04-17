@@ -3,10 +3,14 @@ import {
     createWorkLog,
     getWorkLogsByTicket,
     getWorkLogsByAnalysis,
+    getWorkLogs,
     deleteWorkLog,
 } from "../controllers/workLogController.js";
 
 const router = express.Router();
+
+// Get all work logs
+router.get("/", getWorkLogs);
 
 // Create a new work log
 router.post("/", createWorkLog);

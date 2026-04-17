@@ -9,16 +9,70 @@ const columns = [
     { key: "mobile", label: "Mobile" },
     { key: "email", label: "Email" },
     { key: "website", label: "Website" },
+    {
+        key: "logo",
+        label: "Logo",
+        render: (row) =>
+            row.logo ? (
+                <img
+                    src={row.logo}
+                    alt="Company Logo"
+                    style={{
+                        width: 40,
+                        height: 40,
+                        objectFit: "cover",
+                        borderRadius: 4,
+                    }}
+                />
+            ) : (
+                <span style={{ color: "#9ca3af" }}>No logo</span>
+            ),
+    },
 ];
 
 const formFields = [
-    { name: "code", label: "Company Code", type: "text", placeholder: "e.g. CMP001" },
-    { name: "name", label: "Company Name", type: "text", placeholder: "Acme Corp" },
-    { name: "phone", label: "Phone", type: "tel", placeholder: "+1 234 567 890" },
-    { name: "mobile", label: "Mobile", type: "tel", placeholder: "+1 987 654 321" },
-    { name: "email", label: "Email", type: "email", placeholder: "contact@company.com" },
-    { name: "website", label: "Website", type: "text", placeholder: "https://www.company.com" },
-    { name: "address", label: "Address", type: "textarea", placeholder: "Enter full address..." },
+    {
+        name: "code",
+        label: "Company Code",
+        type: "text",
+        placeholder: "e.g. CMP001",
+    },
+    {
+        name: "name",
+        label: "Company Name",
+        type: "text",
+        placeholder: "Acme Corp",
+    },
+    {
+        name: "phone",
+        label: "Phone",
+        type: "tel",
+        placeholder: "+1 234 567 890",
+    },
+    {
+        name: "mobile",
+        label: "Mobile",
+        type: "tel",
+        placeholder: "+1 987 654 321",
+    },
+    {
+        name: "email",
+        label: "Email",
+        type: "email",
+        placeholder: "contact@company.com",
+    },
+    {
+        name: "website",
+        label: "Website",
+        type: "text",
+        placeholder: "https://www.company.com",
+    },
+    {
+        name: "address",
+        label: "Address",
+        type: "textarea",
+        placeholder: "Enter full address...",
+    },
     { name: "logo", label: "Company Logo", type: "file", accept: "image/*" },
 ];
 

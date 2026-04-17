@@ -1,30 +1,30 @@
 import React, { useEffect, useState } from "react";
-import { getWorkLogs } from "@/Api/TicketApi/ticketAPI";
+import { getMaterialApprovedWorkAnalysis } from "@/Api/TicketApi/ticketAPI";
 import "@/Components/MasterDash/master.css";
 
-const Worker = () => {
-    const [logs, setLogs] = useState([]);
+const MaterialApproved = () => {
+    const [analyses, setAnalyses] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [search, setSearch] = useState("");
 
     useEffect(() => {
-        getWorkLogs()
+        getMaterialApprovedWorkAnalysis()
             .then((res) => {
-                const logs = Array.isArray(res) ? res : (res?.data ?? []);
-                setLogs(logs);
+                const analyses = Array.isArray(res) ? res : (res?.data ?? []);
+                setAnalyses(analyses);
             })
             .catch((err) => setError(err.message))
             .finally(() => setLoading(false));
     }, []);
 
-    const filtered = logs.filter(
-        (log) =>
+    const filtered = analyses.filter(
+        (analysis) =>
             !search ||
-            (log.worker?.name || log.user?.name || "")
+            (analysis.worker_name || "")
                 .toLowerCase()
                 .includes(search.toLowerCase()) ||
-            (log.ticket?.subject || log.ticket_id || "")
+            (analysis.ticket_id?.title || analysis.ticket_id?.ticket_id || "")
                 .toString()
                 .toLowerCase()
                 .includes(search.toLowerCase()),
@@ -34,9 +34,9 @@ const Worker = () => {
         <div className="master-page">
             <div className="page-header">
                 <div>
-                    <h1 className="page-title">Work Details</h1>
+                    <h1 className="page-title">Material Approved</h1>
                     <p className="page-subtitle">
-                        {logs.length} work logs total
+                        {analyses.length} material approved analyses total
                     </p>
                 </div>
             </div>
@@ -55,9 +55,13 @@ const Worker = () => {
                 {error && <div className="error-banner">{error}</div>}
 
                 {loading ? (
-                    <div className="table-loading">Loading work logs...</div>
+                    <div className="table-loading">
+                        Loading material approved analyses...
+                    </div>
                 ) : filtered.length === 0 ? (
-                    <div className="table-empty">No work logs found.</div>
+                    <div className="table-empty">
+                        No material approved analyses found.
+                    </div>
                 ) : (
                     <div className="table-wrapper">
                         <table className="data-table">
@@ -66,37 +70,36 @@ const Worker = () => {
                                     <th>#</th>
                                     <th>Worker</th>
                                     <th>Ticket</th>
+                                    <th>Material Required</th>
                                     <th>Description</th>
-                                    <th>Hours</th>
-                                    <th>Date</th>
+                                    <th>Status</th>
+                                    <th>Approved At</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {filtered.map((log, i) => (
-                                    <tr key={log.id || i}>
+                                {filtered.map((analysis, i) => (
+                                    <tr key={analysis._id || i}>
                                         <td>{i + 1}</td>
+                                        <td>{analysis.worker_name || "-"}</td>
                                         <td>
-                                            {log.worker?.name ||
-                                                log.user?.name ||
+                                            {analysis.ticket_id?.title ||
+                                                `#${analysis.ticket_id?.ticket_id}` ||
                                                 "-"}
                                         </td>
                                         <td>
-                                            {log.ticket?.subject ||
-                                                `#${log.ticket_id}` ||
+                                            {analysis.material_required || "-"}
+                                        </td>
+                                        <td>
+                                            {analysis.material_description ||
                                                 "-"}
                                         </td>
                                         <td>
-                                            {log.description ||
-                                                log.remarks ||
-                                                "-"}
+                                            {analysis.approval_status || "-"}
                                         </td>
                                         <td>
-                                            {log.hours || log.time_spent || "-"}
-                                        </td>
-                                        <td>
-                                            {log.created_at
+                                            {analysis.approved_at
                                                 ? new Date(
-                                                      log.created_at,
+                                                      analysis.approved_at,
                                                   ).toLocaleDateString()
                                                 : "-"}
                                         </td>
@@ -111,4 +114,4 @@ const Worker = () => {
     );
 };
 
-export default Worker;
+export default MaterialApproved;

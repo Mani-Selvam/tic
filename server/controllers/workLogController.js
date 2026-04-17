@@ -4,7 +4,7 @@ export const createWorkLog = async (req, res) => {
     try {
         console.log("📝 Creating Work Log...");
         console.log("Request Body:", req.body);
-        
+
         const {
             ticket_id,
             analysis_id,
@@ -17,9 +17,18 @@ export const createWorkLog = async (req, res) => {
         } = req.body;
 
         // Validation
-        if (!ticket_id || !worker_id || !worker_name || !from_time || !to_time || !duration || !log_date) {
+        if (
+            !ticket_id ||
+            !worker_id ||
+            !worker_name ||
+            !from_time ||
+            !to_time ||
+            !duration ||
+            !log_date
+        ) {
             return res.status(400).json({
-                message: "Missing required fields: ticket_id, worker_id, worker_name, from_time, to_time, duration, log_date",
+                message:
+                    "Missing required fields: ticket_id, worker_id, worker_name, from_time, to_time, duration, log_date",
             });
         }
 
@@ -40,7 +49,7 @@ export const createWorkLog = async (req, res) => {
 
         const savedWorkLog = await workLog.save();
         console.log("✅ Work Log Created:", savedWorkLog);
-        
+
         res.status(201).json({
             message: "Work Log created successfully",
             data: savedWorkLog,
@@ -83,6 +92,28 @@ export const getWorkLogsByAnalysis = async (req, res) => {
         console.log("📊 Fetching Work Logs for Analysis:", analysisId);
 
         const workLogs = await WorkLog.find({ analysis_id: analysisId })
+            .populate("ticket_id", "ticket_id title")
+            .sort({ created_at: -1 });
+
+        console.log("✅ Work Logs Retrieved:", workLogs.length);
+        res.status(200).json({
+            message: "Work logs retrieved successfully",
+            data: workLogs,
+        });
+    } catch (error) {
+        console.error("❌ Error fetching work logs:", error.message);
+        res.status(500).json({
+            message: "Error fetching work logs",
+            error: error.message,
+        });
+    }
+};
+
+export const getWorkLogs = async (req, res) => {
+    try {
+        console.log("📊 Fetching All Work Logs");
+
+        const workLogs = await WorkLog.find()
             .populate("ticket_id", "ticket_id title")
             .sort({ created_at: -1 });
 

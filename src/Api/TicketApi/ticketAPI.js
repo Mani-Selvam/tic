@@ -10,7 +10,9 @@ const getAuthHeaders = () => {
 
 const handleResponse = async (res) => {
     if (!res.ok) {
-        const err = await res.json().catch(() => ({ message: `HTTP ${res.status}` }));
+        const err = await res
+            .json()
+            .catch(() => ({ message: `HTTP ${res.status}` }));
         throw new Error(err.message || `Request failed`);
     }
     return res.json();
@@ -18,12 +20,16 @@ const handleResponse = async (res) => {
 
 export const getTickets = (params = {}) => {
     const query = new URLSearchParams(params).toString();
-    const url = query ? `${API_ENDPOINTS.TICKETS}?${query}` : API_ENDPOINTS.TICKETS;
+    const url = query
+        ? `${API_ENDPOINTS.TICKETS}?${query}`
+        : API_ENDPOINTS.TICKETS;
     return fetch(url, { headers: getAuthHeaders() }).then(handleResponse);
 };
 
 export const getTicketById = (id) =>
-    fetch(`${API_ENDPOINTS.TICKETS}/${id}`, { headers: getAuthHeaders() }).then(handleResponse);
+    fetch(`${API_ENDPOINTS.TICKETS}/${id}`, { headers: getAuthHeaders() }).then(
+        handleResponse,
+    );
 
 export const createTicket = (data) => {
     const isFormData = data instanceof FormData;
@@ -51,12 +57,22 @@ export const deleteTicket = (id) =>
 
 export const getWorkLogs = (params = {}) => {
     const query = new URLSearchParams(params).toString();
-    const url = query ? `${API_ENDPOINTS.WORK_LOGS}?${query}` : API_ENDPOINTS.WORK_LOGS;
+    const url = query
+        ? `${API_ENDPOINTS.WORK_LOGS}?${query}`
+        : API_ENDPOINTS.WORK_LOGS;
     return fetch(url, { headers: getAuthHeaders() }).then(handleResponse);
 };
 
 export const getWorkAnalysis = (params = {}) => {
     const query = new URLSearchParams(params).toString();
-    const url = query ? `${API_ENDPOINTS.WORK_ANALYSIS}?${query}` : API_ENDPOINTS.WORK_ANALYSIS;
+    const url = query
+        ? `${API_ENDPOINTS.WORK_ANALYSIS}?${query}`
+        : API_ENDPOINTS.WORK_ANALYSIS;
     return fetch(url, { headers: getAuthHeaders() }).then(handleResponse);
+};
+
+export const getMaterialApprovedWorkAnalysis = () => {
+    return fetch(`${API_ENDPOINTS.WORK_ANALYSIS}/approved`, {
+        headers: getAuthHeaders(),
+    }).then(handleResponse);
 };

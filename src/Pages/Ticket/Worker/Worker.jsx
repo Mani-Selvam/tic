@@ -1,37 +1,34 @@
 import React, { useEffect, useState } from "react";
-import { getWorkAnalysis } from "@/Api/TicketApi/ticketAPI";
+import { getWorkLogs } from "@/Api/TicketApi/ticketAPI";
 import "@/Components/MasterDash/master.css";
 
 const Worker = () => {
-    const [analyses, setAnalyses] = useState([]);
+    const [logs, setLogs] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [search, setSearch] = useState("");
 
     useEffect(() => {
-        getWorkAnalysis()
+        getWorkLogs()
             .then((res) => {
-                setAnalyses(Array.isArray(res) ? res : (res?.data ?? []));
+                const logs = Array.isArray(res) ? res : (res?.data ?? []);
+                setLogs(logs);
             })
             .catch((err) => setError(err.message))
             .finally(() => setLoading(false));
     }, []);
 
-    const filtered = analyses.filter(
-        (a) =>
+    const filtered = logs.filter(
+        (log) =>
             !search ||
-            (a.worker_name || "").toLowerCase().includes(search.toLowerCase()) ||
-            (a.ticket_id?.title || a.ticket_id?.ticket_id || "")
+            (log.worker?.name || log.user?.name || "")
+                .toLowerCase()
+                .includes(search.toLowerCase()) ||
+            (log.ticket?.subject || log.ticket_id || "")
                 .toString()
                 .toLowerCase()
                 .includes(search.toLowerCase()),
     );
-
-    const approvalBadge = (status) => {
-        if (status === "Approved") return { background: "#f0fdf4", color: "#15803d" };
-        if (status === "Rejected") return { background: "#fef2f2", color: "#dc2626" };
-        return { background: "#fffbeb", color: "#d97706" };
-    };
 
     return (
         <div className="master-page">
@@ -39,7 +36,7 @@ const Worker = () => {
                 <div>
                     <h1 className="page-title">Work Details</h1>
                     <p className="page-subtitle">
-                        {analyses.length} work analysis records total
+                        {logs.length} work logs total
                     </p>
                 </div>
             </div>
@@ -58,9 +55,9 @@ const Worker = () => {
                 {error && <div className="error-banner">{error}</div>}
 
                 {loading ? (
-                    <div className="table-loading">Loading work details...</div>
+                    <div className="table-loading">Loading work logs...</div>
                 ) : filtered.length === 0 ? (
-                    <div className="table-empty">No work details found.</div>
+                    <div className="table-empty">No work logs found.</div>
                 ) : (
                     <>
                         {/* ── Desktop / Tablet: Table ── */}
@@ -69,52 +66,22 @@ const Worker = () => {
                                 <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th>Assigned User</th>
+                                        <th>Worker</th>
                                         <th>Ticket</th>
-                                        <th>Material Required</th>
-                                        <th>Material Description</th>
-                                        <th>Approval Status</th>
+                                        <th>Description</th>
+                                        <th>Hours</th>
                                         <th>Date</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {filtered.map((a, i) => (
-                                        <tr key={a._id || i}>
+                                    {filtered.map((log, i) => (
+                                        <tr key={log.id || i}>
                                             <td>{i + 1}</td>
-                                            <td style={{ fontWeight: 500 }}>{a.worker_name || "-"}</td>
-                                            <td>
-                                                {a.ticket_id?.title
-                                                    ? <span>{a.ticket_id.title}</span>
-                                                    : a.ticket_id?.ticket_id
-                                                        ? <span style={{ color: "#6366f1", fontWeight: 600 }}>#{a.ticket_id.ticket_id}</span>
-                                                        : "-"}
-                                            </td>
-                                            <td>
-                                                <span
-                                                    className="ticket-badge"
-                                                    style={a.material_required === "Yes"
-                                                        ? { background: "#fef2f2", color: "#dc2626" }
-                                                        : { background: "#f0fdf4", color: "#15803d" }}>
-                                                    {a.material_required || "-"}
-                                                </span>
-                                            </td>
-                                            <td style={{ maxWidth: 200, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
-                                                {a.material_description || "-"}
-                                            </td>
-                                            <td>
-                                                <span
-                                                    className="ticket-badge"
-                                                    style={approvalBadge(a.approval_status)}>
-                                                    {a.approval_status || "Pending"}
-                                                </span>
-                                            </td>
-                                            <td style={{ color: "#718096", fontSize: 12, whiteSpace: "nowrap" }}>
-                                                {a.created_at
-                                                    ? new Date(a.created_at).toLocaleDateString()
-                                                    : a.createdAt
-                                                        ? new Date(a.createdAt).toLocaleDateString()
-                                                        : "-"}
-                                            </td>
+                                            <td>{log.worker?.name || log.user?.name || "-"}</td>
+                                            <td>{log.ticket?.subject || (log.ticket_id ? `#${log.ticket_id}` : "-")}</td>
+                                            <td>{log.description || log.remarks || "-"}</td>
+                                            <td>{log.hours || log.time_spent || "-"}</td>
+                                            <td>{log.created_at ? new Date(log.created_at).toLocaleDateString() : "-"}</td>
                                         </tr>
                                     ))}
                                 </tbody>
@@ -123,52 +90,34 @@ const Worker = () => {
 
                         {/* ── Mobile: Card view ── */}
                         <div className="mobile-cards">
-                            {filtered.map((a, i) => (
-                                <div key={a._id || i} className="record-card">
+                            {filtered.map((log, i) => (
+                                <div key={log.id || i} className="record-card">
                                     <div className="record-card-header">
                                         <div>
                                             <div className="record-card-title">
-                                                {a.worker_name || "Unknown Worker"}
+                                                {log.worker?.name || log.user?.name || "Unknown Worker"}
                                             </div>
                                             <div className="record-card-subtitle">
-                                                {a.ticket_id?.title || (a.ticket_id?.ticket_id ? `Ticket #${a.ticket_id.ticket_id}` : "No ticket")}
+                                                {log.ticket?.subject || (log.ticket_id ? `Ticket #${log.ticket_id}` : "No ticket")}
                                             </div>
                                         </div>
-                                        <span
-                                            className="badge"
-                                            style={approvalBadge(a.approval_status)}>
-                                            {a.approval_status || "Pending"}
-                                        </span>
+                                        {(log.hours || log.time_spent) && (
+                                            <span className="badge badge-default">
+                                                {log.hours || log.time_spent} hrs
+                                            </span>
+                                        )}
                                     </div>
                                     <div className="record-card-body">
-                                        <div className="record-card-field">
-                                            <span className="record-card-label">Material Required</span>
-                                            <span className="record-card-value">
-                                                <span
-                                                    className="ticket-badge"
-                                                    style={a.material_required === "Yes"
-                                                        ? { background: "#fef2f2", color: "#dc2626" }
-                                                        : { background: "#f0fdf4", color: "#15803d" }}>
-                                                    {a.material_required || "-"}
-                                                </span>
-                                            </span>
+                                        <div className="record-card-field full-width">
+                                            <span className="record-card-label">Description</span>
+                                            <span className="record-card-value">{log.description || log.remarks || "-"}</span>
                                         </div>
-                                        <div className="record-card-field">
+                                        <div className="record-card-field full-width">
                                             <span className="record-card-label">Date</span>
                                             <span className="record-card-value">
-                                                {a.created_at
-                                                    ? new Date(a.created_at).toLocaleDateString()
-                                                    : a.createdAt
-                                                        ? new Date(a.createdAt).toLocaleDateString()
-                                                        : "-"}
+                                                {log.created_at ? new Date(log.created_at).toLocaleDateString() : "-"}
                                             </span>
                                         </div>
-                                        {a.material_description && (
-                                            <div className="record-card-field full-width">
-                                                <span className="record-card-label">Material Description</span>
-                                                <span className="record-card-value">{a.material_description}</span>
-                                            </div>
-                                        )}
                                     </div>
                                 </div>
                             ))}

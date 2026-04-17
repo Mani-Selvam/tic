@@ -226,39 +226,20 @@ export const updateApproval = async (req, res) => {
             return res.status(404).json({ message: "Analysis not found" });
 
         analysis.approval_status = approval_status;
-        analysis.approved_by = req.user.id;
+        analysis.approved_by = req.user.id; // Manager ID
         analysis.approved_at = Date.now();
 
         await analysis.save();
-
-        // When approved → update ticket status to "Material Approved"
-        if (approval_status === "Approved" && analysis.ticket_id) {
-            try {
-                const materialApprovedStatus = await TicketStatus.findOne({
-                    name: { $regex: "Material Approved", $options: "i" },
-                });
-                if (materialApprovedStatus) {
-                    await Ticket.findByIdAndUpdate(
-                        analysis.ticket_id,
-                        { status_id: materialApprovedStatus._id, status: "Material Approved" },
-                        { new: true }
-                    );
-                    console.log(`✅ Ticket ${analysis.ticket_id} status updated to Material Approved`);
-                }
-            } catch (ticketUpdateErr) {
-                console.error("Error updating ticket status on approval:", ticketUpdateErr.message);
-            }
-        }
-
+        
         // Convert relative image paths to full URLs
         const out = analysis.toObject ? analysis.toObject() : analysis;
         const apiUrl = process.env.API_URL || `http://localhost:${process.env.PORT || 5000}`;
         if (out.uploaded_images && Array.isArray(out.uploaded_images)) {
-            out.uploaded_images = out.uploaded_images.map(img =>
+            out.uploaded_images = out.uploaded_images.map(img => 
                 img && !img.startsWith("http") ? `${apiUrl}/${img}` : img
             );
         }
-
+        
         res.status(200).json(out);
     } catch (error) {
         res.status(500).json({ message: error.message });

@@ -56,36 +56,78 @@ const ClosedTicket = () => {
                 ) : filtered.length === 0 ? (
                     <div className="table-empty">No closed tickets found.</div>
                 ) : (
-                    <div className="table-wrapper">
-                        <table className="data-table">
-                            <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>Subject</th>
-                                    <th>Company</th>
-                                    <th>Priority</th>
-                                    <th>Closed By</th>
-                                    <th>Date Closed</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {filtered.map((ticket, i) => (
-                                    <tr key={ticket._id || i}>
-                                        <td style={{ fontWeight:600, color:"#667eea", fontSize:12 }}>{ticket.ticket_id || i + 1}</td>
-                                        <td>{ticket.title || '-'}</td>
-                                        <td>{ticket.company_id?.name || '-'}</td>
-                                        <td>
-                                            <span className="ticket-badge badge-low">
-                                                {ticket.priority_id?.name || '-'}
-                                            </span>
-                                        </td>
-                                        <td>{ticket.raised_by?.name || '-'}</td>
-                                        <td>{ticket.closed_at ? new Date(ticket.closed_at).toLocaleDateString() : (ticket.updatedAt ? new Date(ticket.updatedAt).toLocaleDateString() : '-')}</td>
+                    <>
+                        {/* ── Desktop / Tablet: Table ── */}
+                        <div className="table-wrapper">
+                            <table className="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Subject</th>
+                                        <th>Company</th>
+                                        <th>Priority</th>
+                                        <th>Closed By</th>
+                                        <th>Date Closed</th>
                                     </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    </div>
+                                </thead>
+                                <tbody>
+                                    {filtered.map((ticket, i) => (
+                                        <tr key={ticket._id || i}>
+                                            <td style={{ fontWeight:600, color:"#667eea", fontSize:12 }}>{ticket.ticket_id || i + 1}</td>
+                                            <td>{ticket.title || '-'}</td>
+                                            <td>{ticket.company_id?.name || '-'}</td>
+                                            <td>
+                                                <span className="ticket-badge badge-low">
+                                                    {ticket.priority_id?.name || '-'}
+                                                </span>
+                                            </td>
+                                            <td>{ticket.raised_by?.name || '-'}</td>
+                                            <td>{ticket.closed_at ? new Date(ticket.closed_at).toLocaleDateString() : (ticket.updatedAt ? new Date(ticket.updatedAt).toLocaleDateString() : '-')}</td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+
+                        {/* ── Mobile: Card view ── */}
+                        <div className="mobile-cards">
+                            {filtered.map((ticket, i) => (
+                                <div key={ticket._id || i} className="record-card">
+                                    <div className="record-card-header">
+                                        <div>
+                                            <div style={{ fontWeight: 700, color: "#6366f1", fontSize: 12, marginBottom: 4 }}>
+                                                {ticket.ticket_id || `#${i + 1}`}
+                                            </div>
+                                            <div className="record-card-title">{ticket.title || '-'}</div>
+                                        </div>
+                                        <span className="ticket-badge badge-low">
+                                            {ticket.priority_id?.name || '-'}
+                                        </span>
+                                    </div>
+                                    <div className="record-card-body">
+                                        <div className="record-card-field">
+                                            <span className="record-card-label">Company</span>
+                                            <span className="record-card-value">{ticket.company_id?.name || '-'}</span>
+                                        </div>
+                                        <div className="record-card-field">
+                                            <span className="record-card-label">Closed By</span>
+                                            <span className="record-card-value">{ticket.raised_by?.name || '-'}</span>
+                                        </div>
+                                        <div className="record-card-field full-width">
+                                            <span className="record-card-label">Date Closed</span>
+                                            <span className="record-card-value">
+                                                {ticket.closed_at
+                                                    ? new Date(ticket.closed_at).toLocaleDateString()
+                                                    : ticket.updatedAt
+                                                        ? new Date(ticket.updatedAt).toLocaleDateString()
+                                                        : '-'}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </>
                 )}
             </div>
         </div>

@@ -59,52 +59,70 @@ const Worker = () => {
                 ) : filtered.length === 0 ? (
                     <div className="table-empty">No work logs found.</div>
                 ) : (
-                    <div className="table-wrapper">
-                        <table className="data-table">
-                            <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>Worker</th>
-                                    <th>Ticket</th>
-                                    <th>Description</th>
-                                    <th>Hours</th>
-                                    <th>Date</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {filtered.map((log, i) => (
-                                    <tr key={log.id || i}>
-                                        <td>{i + 1}</td>
-                                        <td>
-                                            {log.worker?.name ||
-                                                log.user?.name ||
-                                                "-"}
-                                        </td>
-                                        <td>
-                                            {log.ticket?.subject ||
-                                                `#${log.ticket_id}` ||
-                                                "-"}
-                                        </td>
-                                        <td>
-                                            {log.description ||
-                                                log.remarks ||
-                                                "-"}
-                                        </td>
-                                        <td>
-                                            {log.hours || log.time_spent || "-"}
-                                        </td>
-                                        <td>
-                                            {log.created_at
-                                                ? new Date(
-                                                      log.created_at,
-                                                  ).toLocaleDateString()
-                                                : "-"}
-                                        </td>
+                    <>
+                        {/* ── Desktop / Tablet: Table ── */}
+                        <div className="table-wrapper">
+                            <table className="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Worker</th>
+                                        <th>Ticket</th>
+                                        <th>Description</th>
+                                        <th>Hours</th>
+                                        <th>Date</th>
                                     </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    </div>
+                                </thead>
+                                <tbody>
+                                    {filtered.map((log, i) => (
+                                        <tr key={log.id || i}>
+                                            <td>{i + 1}</td>
+                                            <td>{log.worker?.name || log.user?.name || "-"}</td>
+                                            <td>{log.ticket?.subject || (log.ticket_id ? `#${log.ticket_id}` : "-")}</td>
+                                            <td>{log.description || log.remarks || "-"}</td>
+                                            <td>{log.hours || log.time_spent || "-"}</td>
+                                            <td>{log.created_at ? new Date(log.created_at).toLocaleDateString() : "-"}</td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+
+                        {/* ── Mobile: Card view ── */}
+                        <div className="mobile-cards">
+                            {filtered.map((log, i) => (
+                                <div key={log.id || i} className="record-card">
+                                    <div className="record-card-header">
+                                        <div>
+                                            <div className="record-card-title">
+                                                {log.worker?.name || log.user?.name || "Unknown Worker"}
+                                            </div>
+                                            <div className="record-card-subtitle">
+                                                {log.ticket?.subject || (log.ticket_id ? `Ticket #${log.ticket_id}` : "No ticket")}
+                                            </div>
+                                        </div>
+                                        {(log.hours || log.time_spent) && (
+                                            <span className="badge badge-default">
+                                                {log.hours || log.time_spent} hrs
+                                            </span>
+                                        )}
+                                    </div>
+                                    <div className="record-card-body">
+                                        <div className="record-card-field full-width">
+                                            <span className="record-card-label">Description</span>
+                                            <span className="record-card-value">{log.description || log.remarks || "-"}</span>
+                                        </div>
+                                        <div className="record-card-field full-width">
+                                            <span className="record-card-label">Date</span>
+                                            <span className="record-card-value">
+                                                {log.created_at ? new Date(log.created_at).toLocaleDateString() : "-"}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </>
                 )}
             </div>
         </div>

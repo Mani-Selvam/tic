@@ -487,102 +487,163 @@ const TicketList = () => {
                 ) : filtered.length === 0 ? (
                     <div className="table-empty">No tickets found.</div>
                 ) : (
-                    <div className="table-wrapper">
-                        <table className="data-table">
-                            <thead>
-                                <tr>
-                                    <th>Ticket ID</th>
-                                    <th>Title</th>
-                                    <th>Department</th>
-                                    <th>Company</th>
-                                    <th>Location</th>
-                                    <th>Priority</th>
-                                    <th>Status</th>
-                                    <th>Approval</th>
-                                    <th>Raised By</th>
-                                    <th>Assigned To</th>
-                                    <th>Created</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {filtered.map((ticket, i) => (
-                                    <tr key={ticket._id || i}>
-                                        <td style={{ fontWeight: 700, color: "#6366f1", fontSize: 12 }}>
-                                            {ticket.ticket_id || "-"}
-                                        </td>
-                                        <td>
-                                            <div className="ticket-subject">{ticket.title || "-"}</div>
+                    <>
+                        {/* ── Desktop / Tablet: Table ── */}
+                        <div className="table-wrapper">
+                            <table className="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Ticket ID</th>
+                                        <th>Title</th>
+                                        <th>Department</th>
+                                        <th>Company</th>
+                                        <th>Location</th>
+                                        <th>Priority</th>
+                                        <th>Status</th>
+                                        <th>Approval</th>
+                                        <th>Raised By</th>
+                                        <th>Assigned To</th>
+                                        <th>Created</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {filtered.map((ticket, i) => (
+                                        <tr key={ticket._id || i}>
+                                            <td style={{ fontWeight: 700, color: "#6366f1", fontSize: 12 }}>
+                                                {ticket.ticket_id || "-"}
+                                            </td>
+                                            <td>
+                                                <div className="ticket-subject">{ticket.title || "-"}</div>
+                                                {ticket.description && (
+                                                    <div className="ticket-desc">
+                                                        {String(ticket.description).slice(0, 50)}{ticket.description?.length > 50 ? "…" : ""}
+                                                    </div>
+                                                )}
+                                            </td>
+                                            <td>{ticket.department_id?.name || "-"}</td>
+                                            <td>{ticket.company_id?.name || "-"}</td>
+                                            <td style={{ color: "#718096", fontSize: 12 }}>{ticket.location || "-"}</td>
+                                            <td>
+                                                {ticket.priority_id?.name
+                                                    ? <span className={`ticket-badge ${pBadge(ticket)}`}>{ticket.priority_id.name}</span>
+                                                    : <span style={{ color: "#a0aec0", fontSize: 12 }}>—</span>}
+                                            </td>
+                                            <td>
+                                                {ticket.status_id?.name
+                                                    ? <span className="ticket-badge badge-status">{ticket.status_id.name}</span>
+                                                    : <span style={{ color: "#a0aec0", fontSize: 12 }}>—</span>}
+                                            </td>
+                                            <td>
+                                                <span className="ticket-badge" style={{ ...approvalStyle(ticket.approval_status), fontSize: 11 }}>
+                                                    {ticket.approval_status || "Pending"}
+                                                </span>
+                                            </td>
+                                            <td>{ticket.raised_by?.name || "-"}</td>
+                                            <td>
+                                                {Array.isArray(ticket.assigned_to) && ticket.assigned_to.length > 0
+                                                    ? ticket.assigned_to.map(u => u?.name).filter(Boolean).join(", ")
+                                                    : <span style={{ color: "#a0aec0" }}>Unassigned</span>}
+                                            </td>
+                                            <td style={{ color: "#718096", fontSize: 12, whiteSpace: "nowrap" }}>
+                                                {ticket.createdAt ? new Date(ticket.createdAt).toLocaleDateString() : "-"}
+                                            </td>
+                                            <td>
+                                                <div className="action-btns">
+                                                    <button className="action-btn view-btn" title="View" onClick={() => navigate("/ticket/show-ticket", { state: { ticket } })}><ViewIcon /></button>
+                                                    <button className="action-btn edit-btn" title="Edit" onClick={() => navigate("/ticket/create-ticket", { state: { ticket, isEdit: true } })}><EditIcon /></button>
+                                                    <button className="action-btn approve-btn" title="Approve / Assign" onClick={() => openApproval(ticket)}><ApproveIcon /></button>
+                                                    <button className="action-btn delete-btn" title="Delete" onClick={() => setDeleteConfirm(ticket._id)}><DeleteIcon /></button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+
+                        {/* ── Mobile: Card view ── */}
+                        <div className="mobile-cards">
+                            {filtered.map((ticket, i) => (
+                                <div key={ticket._id || i} className="record-card">
+                                    <div className="record-card-header">
+                                        <div style={{ flex: 1, minWidth: 0 }}>
+                                            <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 4 }}>
+                                                <span style={{ fontWeight: 700, color: "#6366f1", fontSize: 12 }}>
+                                                    {ticket.ticket_id || `#${i + 1}`}
+                                                </span>
+                                                <span className="ticket-badge" style={{ ...approvalStyle(ticket.approval_status), fontSize: 11 }}>
+                                                    {ticket.approval_status || "Pending"}
+                                                </span>
+                                            </div>
+                                            <div className="record-card-title" style={{ fontSize: 14 }}>{ticket.title || "-"}</div>
                                             {ticket.description && (
-                                                <div className="ticket-desc">
-                                                    {String(ticket.description).slice(0, 50)}{ticket.description?.length > 50 ? "…" : ""}
+                                                <div className="record-card-subtitle">
+                                                    {String(ticket.description).slice(0, 60)}{ticket.description?.length > 60 ? "…" : ""}
                                                 </div>
                                             )}
-                                        </td>
-                                        <td>{ticket.department_id?.name || "-"}</td>
-                                        <td>{ticket.company_id?.name || "-"}</td>
-                                        <td style={{ color: "#718096", fontSize: 12 }}>{ticket.location || "-"}</td>
-                                        <td>
-                                            {ticket.priority_id?.name
-                                                ? <span className={`ticket-badge ${pBadge(ticket)}`}>{ticket.priority_id.name}</span>
-                                                : <span style={{ color: "#a0aec0", fontSize: 12 }}>—</span>}
-                                        </td>
-                                        <td>
-                                            {ticket.status_id?.name
-                                                ? <span className="ticket-badge badge-status">{ticket.status_id.name}</span>
-                                                : <span style={{ color: "#a0aec0", fontSize: 12 }}>—</span>}
-                                        </td>
-                                        <td>
-                                            <span className="ticket-badge" style={{ ...approvalStyle(ticket.approval_status), fontSize: 11 }}>
-                                                {ticket.approval_status || "Pending"}
+                                        </div>
+                                    </div>
+                                    <div className="record-card-body">
+                                        <div className="record-card-field">
+                                            <span className="record-card-label">Priority</span>
+                                            <span className="record-card-value">
+                                                {ticket.priority_id?.name
+                                                    ? <span className={`ticket-badge ${pBadge(ticket)}`}>{ticket.priority_id.name}</span>
+                                                    : "—"}
                                             </span>
-                                        </td>
-                                        <td>{ticket.raised_by?.name || "-"}</td>
-                                        <td>
-                                            {Array.isArray(ticket.assigned_to) && ticket.assigned_to.length > 0
-                                                ? ticket.assigned_to.map(u => u?.name).filter(Boolean).join(", ")
-                                                : <span style={{ color: "#a0aec0" }}>Unassigned</span>}
-                                        </td>
-                                        <td style={{ color: "#718096", fontSize: 12, whiteSpace: "nowrap" }}>
-                                            {ticket.createdAt ? new Date(ticket.createdAt).toLocaleDateString() : "-"}
-                                        </td>
-                                        <td>
-                                            <div className="action-btns">
-                                                {/* View */}
-                                                <button
-                                                    className="action-btn view-btn"
-                                                    title="View"
-                                                    onClick={() => navigate("/ticket/show-ticket", { state: { ticket } })}>
-                                                    <ViewIcon />
-                                                </button>
-                                                {/* Edit */}
-                                                <button
-                                                    className="action-btn edit-btn"
-                                                    title="Edit"
-                                                    onClick={() => navigate("/ticket/create-ticket", { state: { ticket, isEdit: true } })}>
-                                                    <EditIcon />
-                                                </button>
-                                                {/* Approve */}
-                                                <button
-                                                    className="action-btn approve-btn"
-                                                    title="Approve / Assign"
-                                                    onClick={() => openApproval(ticket)}>
-                                                    <ApproveIcon />
-                                                </button>
-                                                {/* Delete */}
-                                                <button
-                                                    className="action-btn delete-btn"
-                                                    title="Delete"
-                                                    onClick={() => setDeleteConfirm(ticket._id)}>
-                                                    <DeleteIcon />
-                                                </button>
+                                        </div>
+                                        <div className="record-card-field">
+                                            <span className="record-card-label">Status</span>
+                                            <span className="record-card-value">
+                                                {ticket.status_id?.name
+                                                    ? <span className="ticket-badge badge-status">{ticket.status_id.name}</span>
+                                                    : "—"}
+                                            </span>
+                                        </div>
+                                        <div className="record-card-field">
+                                            <span className="record-card-label">Department</span>
+                                            <span className="record-card-value">{ticket.department_id?.name || "-"}</span>
+                                        </div>
+                                        <div className="record-card-field">
+                                            <span className="record-card-label">Company</span>
+                                            <span className="record-card-value">{ticket.company_id?.name || "-"}</span>
+                                        </div>
+                                        <div className="record-card-field">
+                                            <span className="record-card-label">Raised By</span>
+                                            <span className="record-card-value">{ticket.raised_by?.name || "-"}</span>
+                                        </div>
+                                        <div className="record-card-field">
+                                            <span className="record-card-label">Created</span>
+                                            <span className="record-card-value">
+                                                {ticket.createdAt ? new Date(ticket.createdAt).toLocaleDateString() : "-"}
+                                            </span>
+                                        </div>
+                                        {ticket.location && (
+                                            <div className="record-card-field full-width">
+                                                <span className="record-card-label">Location</span>
+                                                <span className="record-card-value">{ticket.location}</span>
                                             </div>
-                                        </td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    </div>
+                                        )}
+                                        <div className="record-card-field full-width">
+                                            <span className="record-card-label">Assigned To</span>
+                                            <span className="record-card-value">
+                                                {Array.isArray(ticket.assigned_to) && ticket.assigned_to.length > 0
+                                                    ? ticket.assigned_to.map(u => u?.name).filter(Boolean).join(", ")
+                                                    : "Unassigned"}
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div className="record-card-footer">
+                                        <button className="action-btn view-btn" title="View" onClick={() => navigate("/ticket/show-ticket", { state: { ticket } })}><ViewIcon /></button>
+                                        <button className="action-btn edit-btn" title="Edit" onClick={() => navigate("/ticket/create-ticket", { state: { ticket, isEdit: true } })}><EditIcon /></button>
+                                        <button className="action-btn approve-btn" title="Approve / Assign" onClick={() => openApproval(ticket)}><ApproveIcon /></button>
+                                        <button className="action-btn delete-btn" title="Delete" onClick={() => setDeleteConfirm(ticket._id)}><DeleteIcon /></button>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </>
                 )}
             </div>
 

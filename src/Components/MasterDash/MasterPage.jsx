@@ -216,63 +216,119 @@ const MasterPage = ({
                         No {title.toLowerCase()} found.
                     </div>
                 ) : (
-                    <div className="table-wrapper">
-                        <table className="data-table">
-                            <thead>
-                                <tr>
-                                    <th>#</th>
-                                    {columns.map((col) => (
-                                        <th key={col.key}>{col.label}</th>
-                                    ))}
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {filtered.map((row, i) => (
-                                    <tr key={row[rowKey] || i}>
-                                        <td>{i + 1}</td>
+                    <>
+                        {/* ── Desktop / Tablet: Table ── */}
+                        <div className="table-wrapper">
+                            <table className="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
                                         {columns.map((col) => (
-                                            <td key={col.key}>
-                                                {col.render
-                                                    ? col.render(row)
-                                                    : (row[col.key] ?? "-")}
-                                            </td>
+                                            <th key={col.key}>{col.label}</th>
                                         ))}
-                                        <td>
-                                            <div className="action-btns">
-                                                <button
-                                                    className="action-btn edit-btn"
-                                                    onClick={() =>
-                                                        openView(row)
-                                                    }
-                                                    title="View">
-                                                    <ViewIcon />
-                                                </button>
-                                                <button
-                                                    className="action-btn edit-btn"
-                                                    onClick={() =>
-                                                        openEdit(row)
-                                                    }
-                                                    title="Edit">
-                                                    <EditIcon />
-                                                </button>
-                                                <button
-                                                    className="action-btn delete-btn"
-                                                    onClick={() =>
-                                                        setDeleteConfirm(
-                                                            row[rowKey],
-                                                        )
-                                                    }
-                                                    title="Delete">
-                                                    <DeleteIcon />
-                                                </button>
-                                            </div>
-                                        </td>
+                                        <th>Actions</th>
                                     </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    </div>
+                                </thead>
+                                <tbody>
+                                    {filtered.map((row, i) => (
+                                        <tr key={row[rowKey] || i}>
+                                            <td>{i + 1}</td>
+                                            {columns.map((col) => (
+                                                <td key={col.key}>
+                                                    {col.render
+                                                        ? col.render(row)
+                                                        : (row[col.key] ?? "-")}
+                                                </td>
+                                            ))}
+                                            <td>
+                                                <div className="action-btns">
+                                                    <button
+                                                        className="action-btn edit-btn"
+                                                        onClick={() => openView(row)}
+                                                        title="View">
+                                                        <ViewIcon />
+                                                    </button>
+                                                    <button
+                                                        className="action-btn edit-btn"
+                                                        onClick={() => openEdit(row)}
+                                                        title="Edit">
+                                                        <EditIcon />
+                                                    </button>
+                                                    <button
+                                                        className="action-btn delete-btn"
+                                                        onClick={() => setDeleteConfirm(row[rowKey])}
+                                                        title="Delete">
+                                                        <DeleteIcon />
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+
+                        {/* ── Mobile: Card view ── */}
+                        <div className="mobile-cards">
+                            {filtered.map((row, i) => {
+                                const primaryCol = columns[0];
+                                const secondaryCol = columns[1];
+                                const restCols = columns.slice(2);
+                                return (
+                                    <div key={row[rowKey] || i} className="record-card">
+                                        <div className="record-card-header">
+                                            <div>
+                                                <div className="record-card-title">
+                                                    {primaryCol?.render
+                                                        ? primaryCol.render(row)
+                                                        : (row[primaryCol?.key] ?? `#${i + 1}`)}
+                                                </div>
+                                                {secondaryCol && (
+                                                    <div className="record-card-subtitle">
+                                                        {secondaryCol.label}: {secondaryCol.render
+                                                            ? secondaryCol.render(row)
+                                                            : (row[secondaryCol.key] ?? "-")}
+                                                    </div>
+                                                )}
+                                            </div>
+                                        </div>
+                                        {restCols.length > 0 && (
+                                            <div className="record-card-body">
+                                                {restCols.map((col) => (
+                                                    <div key={col.key} className="record-card-field">
+                                                        <span className="record-card-label">{col.label}</span>
+                                                        <span className="record-card-value">
+                                                            {col.render ? col.render(row) : (row[col.key] ?? "-")}
+                                                        </span>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        )}
+                                        <div className="record-card-footer">
+                                            <button
+                                                className="action-btn edit-btn"
+                                                onClick={() => openView(row)}
+                                                title="View">
+                                                <ViewIcon />
+                                            </button>
+                                            <button
+                                                className="action-btn edit-btn"
+                                                onClick={() => openEdit(row)}
+                                                title="Edit">
+                                                <EditIcon />
+                                            </button>
+                                            <button
+                                                className="action-btn delete-btn"
+                                                onClick={() => setDeleteConfirm(row[rowKey])}
+                                                title="Delete">
+                                                <DeleteIcon />
+                                            </button>
+                                        </div>
+                                    </div>
+                                );
+                            })}
+                        </div>
+                    </>
                 )}
             </div>
 

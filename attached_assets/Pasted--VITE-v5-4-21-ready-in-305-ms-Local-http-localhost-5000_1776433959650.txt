@@ -1,0 +1,31 @@
+  VITE v5.4.21  ready in 305 ms
+
+  ➜  Local:   http://localhost:5000/
+  ➜  Network: http://172.31.107.98:5000/
+  ➜  press h + enter to show help
+◇ injected env (3) from .env // tip: ⌘ override existing { override: true }
+Server running on port 3001
+MongoDB Connected
+✓ TicketStatus already exists: Material Request
+✓ TicketStatus already exists: Material Approved
+1:51:40 PM [vite] changed tsconfig file detected: /home/runner/workspace/.local/skills/.tmp-artifacts-e32SXz2iqTUh2Z3mzIGGp/artifacts/automation/files/tsconfig.json - Clearing cache and forcing full-reload to ensure TypeScript is compiled with updated config values.
+1:51:40 PM [vite] changed tsconfig file detected: /home/runner/workspace/.local/skills/.tmp-artifacts-e32SXz2iqTUh2Z3mzIGGp/artifacts/expo/files/tsconfig.json - Clearing cache and forcing full-reload to ensure TypeScript is compiled with updated config values.
+1:51:40 PM [vite] page reload .local/skills/.tmp-artifacts-e32SXz2iqTUh2Z3mzIGGp/artifacts/mockup-sandbox/files/index.html
+1:51:40 PM [vite] page reload .local/skills/.tmp-artifacts-e32SXz2iqTUh2Z3mzIGGp/artifacts/expo/files/server/templates/landing-page.html
+1:51:40 PM [vite] changed tsconfig file detected: /home/runner/workspace/.local/skills/.tmp-artifacts-e32SXz2iqTUh2Z3mzIGGp/artifacts/mockup-sandbox/files/tsconfig.json - Clearing cache and forcing full-reload to ensure TypeScript is compiled with updated config values.
+1:51:40 PM [vite] changed tsconfig file detected: /home/runner/workspace/.local/skills/.tmp-artifacts-e32SXz2iqTUh2Z3mzIGGp/artifacts/react-vite/files/tsconfig.json - Clearing cache and forcing full-reload to ensure TypeScript is compiled with updated config values.
+1:51:40 PM [vite] changed tsconfig file detected: /home/runner/workspace/.local/skills/.tmp-artifacts-e32SXz2iqTUh2Z3mzIGGp/artifacts/react-vite/files/tsconfig.json - Clearing cache and forcing full-reload to ensure TypeScript is compiled with updated config values. (x2)
+1:51:40 PM [vite] changed tsconfig file detected: /home/runner/workspace/.local/skills/artifacts/artifacts/expo/files/tsconfig.json - Clearing cache and forcing full-reload to ensure TypeScript is compiled with updated config values.
+1:51:40 PM [vite] changed tsconfig file detected: /home/runner/workspace/.local/skills/artifacts/artifacts/slides/files/tsconfig.json - Clearing cache and forcing full-reload to ensure TypeScript is compiled with updated config values.
+1:51:40 PM [vite] changed tsconfig file detected: /home/runner/workspace/.local/skills/artifacts/artifacts/automation/files/tsconfig.json - Clearing cache and forcing full-reload to ensure TypeScript is compiled with updated config values.
+1:51:40 PM [vite] changed tsconfig file detected: /home/runner/workspace/.local/skills/artifacts/artifacts/mockup-sandbox/files/tsconfig.json - Clearing cache and forcing full-reload to ensure TypeScript is compiled with updated config values.
+1:51:40 PM [vite] changed tsconfig file detected: /home/runner/workspace/.local/skills/artifacts/artifacts/video-js/files/tsconfig.json - Clearing cache and forcing full-reload to ensure TypeScript is compiled with updated config values.
+1:51:40 PM [vite] changed tsconfig file detected: /home/runner/workspace/.local/skills/artifacts/artifacts/react-vite/files/tsconfig.json - Clearing cache and forcing full-reload to ensure TypeScript is compiled with updated config values.
+1:51:40 PM [vite] page reload .local/skills/artifacts/artifacts/mockup-sandbox/files/index.html
+1:51:40 PM [vite] page reload .local/skills/artifacts/artifacts/expo/files/server/templates/landing-page.html
+1:51:40 PM [vite] changed tsconfig file detected: /home/runner/workspace/.local/skills/.tmp-artifacts-e32SXz2iqTUh2Z3mzIGGp/artifacts/automation/files/tsconfig.json - Clearing cache and forcing full-reload to ensure TypeScript is compiled with updated config values.
+1:51:40 PM [vite] changed tsconfig file detected: /home/runner/workspace/.local/skills/.tmp-artifacts-e32SXz2iqTUh2Z3mzIGGp/artifacts/expo/files/tsconfig.json - Clearing cache and forcing full-reload to ensure TypeScript is compiled with updated config values.
+1:51:40 PM [vite] changed tsconfig file detected: /home/runner/workspace/.local/skills/.tmp-artifacts-e32SXz2iqTUh2Z3mzIGGp/artifacts/mockup-sandbox/files/tsconfig.json - Clearing cache and forcing full-reload to ensure TypeScript is compiled with updated config values.
+1:51:40 PM [vite] changed tsconfig file detected: /home/runner/workspace/.local/skills/.tmp-artifacts-e32SXz2iqTUh2Z3mzIGGp/artifacts/react-vite/files/tsconfig.json - Clearing cache and forcing full-reload to ensure TypeScript is compiled with updated config values.
+1:51:40 PM [vite] page reload .local/skills/.tmp-artifacts-e32SXz2iqTUh2Z3mzIGGp/artifacts/expo/files/server/templates/landing-page.html
+1:51:40 PM [vite] page reload .local/skills/.tmp-artifacts-e32SXz2iqTUh2Z3mzIGGp/artifacts/mockup-sandbox/files/index.html

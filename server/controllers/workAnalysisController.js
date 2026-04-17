@@ -185,7 +185,7 @@ export const createWorkAnalysis = async (req, res) => {
             out.worker_name = worker ? worker.name : finalWorkerId;
             
             // Convert relative image paths to full URLs
-            const apiUrl = process.env.API_URL || `http://localhost:${process.env.PORT || 5000}`;
+            const apiUrl = process.env.API_URL || `http://localhost:${process.env.PORT || 3000}`;
             if (out.uploaded_images && Array.isArray(out.uploaded_images)) {
                 out.uploaded_images = out.uploaded_images.map(img => 
                     img && !img.startsWith("http") ? `${apiUrl}/${img}` : img
@@ -199,7 +199,7 @@ export const createWorkAnalysis = async (req, res) => {
             const out = savedAnalysis.toObject ? savedAnalysis.toObject() : savedAnalysis;
             
             // Convert relative image paths to full URLs
-            const apiUrl = process.env.API_URL || `http://localhost:${process.env.PORT || 5000}`;
+            const apiUrl = process.env.API_URL || `http://localhost:${process.env.PORT || 3000}`;
             if (out.uploaded_images && Array.isArray(out.uploaded_images)) {
                 out.uploaded_images = out.uploaded_images.map(img => 
                     img && !img.startsWith("http") ? `${apiUrl}/${img}` : img
@@ -233,7 +233,7 @@ export const updateApproval = async (req, res) => {
         
         // Convert relative image paths to full URLs
         const out = analysis.toObject ? analysis.toObject() : analysis;
-        const apiUrl = process.env.API_URL || `http://localhost:${process.env.PORT || 5000}`;
+        const apiUrl = process.env.API_URL || `http://localhost:${process.env.PORT || 3000}`;
         if (out.uploaded_images && Array.isArray(out.uploaded_images)) {
             out.uploaded_images = out.uploaded_images.map(img => 
                 img && !img.startsWith("http") ? `${apiUrl}/${img}` : img

@@ -1,57 +1,54 @@
 .show-card {
     background: white;
-    border-radius: 14px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
-    border: 1px solid #e9ecef;
-    padding: 28px;
+    border-radius: 18px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    border: 1px solid #f1f5f9;
+    padding: 28px 32px;
+    animation: pageIn 0.3s ease;
+}
+
+@keyframes pageIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 .show-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 20px;
+    gap: 14px;
     margin-bottom: 24px;
 }
 
 .show-field {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
+    display: flex; flex-direction: column; gap: 4px;
+    padding: 14px 16px;
+    background: #f8fafc;
+    border-radius: 10px;
+    border: 1px solid #f1f5f9;
+    transition: border-color 0.18s;
 }
+.show-field:hover { border-color: #e2e8f0; }
 
 .show-label {
-    font-size: 12px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    color: #718096;
+    font-size: 11px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.5px; color: #94a3b8;
 }
 
-.show-value {
-    font-size: 15px;
-    color: #2d3748;
-    font-weight: 500;
-}
+.show-value { font-size: 14px; color: #1e293b; font-weight: 500; }
 
 .show-description {
     padding-top: 20px;
-    border-top: 1px solid #f0f0f0;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
+    border-top: 1px solid #f1f5f9;
+    display: flex; flex-direction: column; gap: 8px;
 }
 
 .description-text {
-    font-size: 14px;
-    color: #4a5568;
-    line-height: 1.7;
-    background: #f7fafc;
-    border-radius: 10px;
-    padding: 16px;
-    margin: 0;
-    border: 1px solid #e9ecef;
+    font-size: 14px; color: #374151; line-height: 1.7;
+    background: #f8fafc; border-radius: 10px;
+    padding: 16px; margin: 0; border: 1px solid #f1f5f9;
 }
 
 @media (max-width: 640px) {
     .show-grid { grid-template-columns: 1fr; }
+    .show-card { padding: 20px 16px; }
 }

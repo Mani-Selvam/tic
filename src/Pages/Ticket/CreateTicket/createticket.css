@@ -1,9 +1,16 @@
 .create-card {
     background: white;
-    border-radius: 14px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
-    border: 1px solid #e9ecef;
-    padding: 28px;
+    border-radius: 18px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    border: 1px solid #f1f5f9;
+    padding: 28px 32px;
+    max-width: 760px;
+    animation: pageIn 0.3s ease;
+}
+
+@keyframes pageIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 .form-row {
@@ -13,14 +20,12 @@
 }
 
 .form-actions {
-    display: flex;
-    justify-content: flex-end;
-    gap: 12px;
-    margin-top: 24px;
-    padding-top: 20px;
-    border-top: 1px solid #f0f0f0;
+    display: flex; justify-content: flex-end; gap: 12px;
+    margin-top: 24px; padding-top: 20px;
+    border-top: 1px solid #f1f5f9;
 }
 
 @media (max-width: 640px) {
     .form-row { grid-template-columns: 1fr; }
+    .create-card { padding: 20px 16px; }
 }

@@ -17,7 +17,7 @@ const handleResponse = async (res) => {
 };
 
 export const getWorkerAssignedTickets = () =>
-    fetch(`${API_ENDPOINTS.TICKETS}/assigned`, {
+    fetch(`${API_ENDPOINTS.TICKETS}/worker/assigned`, {
         headers: getAuthHeaders(),
     }).then(handleResponse);
 

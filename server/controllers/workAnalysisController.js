@@ -35,7 +35,7 @@ export const createWorkAnalysis = async (req, res) => {
         console.log("   Extracted worker_name:", worker_name);
 
         // Use worker_id from request body or fallback to authenticated user
-        const finalWorkerId = worker_id || req.user.id;
+        const finalWorkerId = worker_id || (req.user.user && req.user.user.id) || req.user.id;
 
         if (!finalWorkerId) {
             return res.status(400).json({ message: "Worker ID is required" });
@@ -226,7 +226,7 @@ export const updateApproval = async (req, res) => {
             return res.status(404).json({ message: "Analysis not found" });
 
         analysis.approval_status = approval_status;
-        analysis.approved_by = req.user.id; // Manager ID
+        analysis.approved_by = (req.user.user && req.user.user.id) || req.user.id; // Manager ID
         analysis.approved_at = Date.now();
 
         await analysis.save();

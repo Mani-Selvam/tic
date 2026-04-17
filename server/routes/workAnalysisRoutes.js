@@ -14,7 +14,7 @@ const router = express.Router();
 // @Access  Private
 router.get("/worker", auth, async (req, res) => {
     try {
-        const workerId = req.user.id;
+        const workerId = (req.user.user && req.user.user.id) || req.user.id;
         console.log("Fetching work analysis for worker:", workerId);
 
         // Import WorkAnalysis model to query directly

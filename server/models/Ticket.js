@@ -79,6 +79,11 @@ const TicketSchema = new mongoose.Schema(
             type: Date,
             default: null,
         },
+        remarks: {
+            type: String,
+            default: null,
+            trim: true,
+        },
         location: {
             type: String,
             required: false,

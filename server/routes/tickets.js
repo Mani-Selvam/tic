@@ -285,6 +285,7 @@ router.put("/:id", async (req, res) => {
             approved_at,
             closed_at,
             location,
+            remarks,
         } = req.body;
 
         // If status_id is provided, fetch the status name and update both status_id and status
@@ -301,6 +302,7 @@ router.put("/:id", async (req, res) => {
             ...(approved_at && { approved_at }),
             ...(closed_at !== undefined && { closed_at: closed_at ? new Date(closed_at) : null }),
             ...(location !== undefined && { location: location || null }),
+            ...(remarks !== undefined && { remarks: remarks || null }),
         };
 
         // If status_id is provided but status string is not, fetch the status name from the database

@@ -2102,11 +2102,10 @@ if (typeof document !== 'undefined') {
 const styles = {
     pageContainer: {
         fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
-        backgroundColor: "#f3f4f6",
+        backgroundColor: "#f1f5f9",
         minHeight: "100vh",
-        padding: "32px",
-        color: "#1e293b",
-     
+        padding: "28px",
+        color: "#0f172a",
     },
     headerSection: {
      display: "flex",
@@ -2142,7 +2141,7 @@ const styles = {
     statsCount: {
         fontSize: "18px",
         fontWeight: "700",
-        color: "#3b82f6",
+        color: "#4f46e5",
     },
     statsLabel: {
         fontSize: "13px",
@@ -2311,14 +2310,15 @@ const styles = {
         justifyContent: "center",
         gap: "6px",
         padding: "10px 12px",
-        borderRadius: "6px",
-        border: "1px solid #3b82f6",
-        background: "white",
-        color: "#2563eb",
+        borderRadius: "8px",
+        border: "none",
+        background: "linear-gradient(135deg, #4f46e5 0%, #6366f1 100%)",
+        color: "white",
         cursor: "pointer",
         fontSize: "13px",
         fontWeight: "600",
         transition: "all 0.2s",
+        boxShadow: "0 3px 10px rgba(79,70,229,0.24)",
     },
     "btnAction:hover": {
         background: "#eff6ff",
@@ -2382,7 +2382,7 @@ const styles = {
         width: "40px",
         height: "40px",
         border: "4px solid #e2e8f0",
-        borderTop: "4px solid #3b82f6",
+        borderTop: "4px solid #4f46e5",
         borderRadius: "50%",
         animation: "spin 1s linear infinite",
     },
@@ -2390,7 +2390,7 @@ const styles = {
         width: "30px",
         height: "30px",
         border: "3px solid #e2e8f0",
-        borderTop: "3px solid #3b82f6",
+        borderTop: "3px solid #4f46e5",
         borderRadius: "50%",
         animation: "spin 1s linear infinite",
         margin: "0 auto",

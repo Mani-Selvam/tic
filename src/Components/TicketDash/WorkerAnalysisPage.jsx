@@ -943,13 +943,13 @@ const styles = {
         padding: "10px",
         borderRadius: "8px",
         border: "none",
-        background: "#3b82f6", // Blue 500
+        background: "linear-gradient(135deg, #4f46e5 0%, #6366f1 100%)",
         color: "white",
         fontSize: "14px",
         fontWeight: "600",
         cursor: "pointer",
         transition: "all 0.2s",
-        boxShadow: "0 1px 2px rgba(59, 130, 246, 0.3)",
+        boxShadow: "0 4px 12px rgba(79, 70, 229, 0.28)",
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
@@ -1157,9 +1157,6 @@ const styles = {
         padding: "8px",
         borderRadius: "8px",
         transition: "background 0.2s",
-    },
-    iconBtn: {
-        ":hover": { background: "#f1f5f9" }
     },
     
     // --- Toast & Loading ---

@@ -102,9 +102,10 @@ const ShowTicket = () => {
 
     const styles = {
         pageContainer: {
-            padding: "24px",
-            background: "linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)",
+            padding: "28px",
+            background: "#f1f5f9",
             minHeight: "100vh",
+            fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
         },
         headerSection: {
             marginBottom: "32px",
@@ -125,7 +126,7 @@ const ShowTicket = () => {
         },
         backButton: {
             padding: "10px 20px",
-            background: "#3b82f6",
+            background: "linear-gradient(135deg, #4f46e5 0%, #6366f1 100%)",
             color: "white",
             border: "none",
             borderRadius: "8px",
@@ -133,6 +134,7 @@ const ShowTicket = () => {
             fontSize: "14px",
             fontWeight: "600",
             transition: "all 0.2s",
+            boxShadow: "0 4px 12px rgba(79,70,229,0.24)",
         },
         cardContainer: {
             display: "grid",
@@ -249,7 +251,7 @@ const ShowTicket = () => {
                             width: "40px",
                             height: "40px",
                             border: "4px solid #e2e8f0",
-                            borderTop: "4px solid #3b82f6",
+                            borderTop: "4px solid #4f46e5",
                             borderRadius: "50%",
                             margin: "0 auto 16px",
                             animation: "spin 1s linear infinite",

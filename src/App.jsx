@@ -11,12 +11,12 @@ import Designation from "@/Pages/Master/Designation/Designation";
 import Department from "@/Pages/Master/Department/Department";
 import TicketStatus from "@/Pages/Master/TicketStatus/TicketStatus";
 import User from "@/Pages/Master/User/User";
-import TicketList from "@/Pages/Ticket/TicketList/TicketList";
-import CreateTicket from "@/Pages/Ticket/CreateTicket/CreateTicket";
-import Worker from "@/Pages/Ticket/Worker/Worker";
-import MaterialApproved from "@/Pages/Ticket/MaterialApproved/MaterialApproved";
-import ClosedTicket from "@/Pages/Ticket/Closed/ClosedTicket";
-import ShowTicket from "@/Pages/Ticket/ShowTicket/ShowTicket";
+import TicketList from "@/Components/TicketDash/TicketList";
+import CreateTicket from "@/Components/TicketDash/CreateTicket";
+import Worker from "@/Components/TicketDash/WorkerAnalysisPage";
+import MaterialApproved from "@/Components/TicketDash/MaterialApprovedPage";
+import ClosedTicket from "@/Components/TicketDash/ClosedTicket";
+import ShowTicket from "@/Components/TicketDash/ShowTicket";
 
 const App = () => (
     <BrowserRouter>

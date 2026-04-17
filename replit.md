@@ -1,89 +1,77 @@
-# Neo Ticket System
+# Ticket Management System
 
-A full-stack ticket management system built with the MERN stack (MongoDB, Express, React, Node.js).
+## Overview
+A full-stack ticket management system for managing workplace requests, approvals, and work logs. Features a modern web interface for users and administrators to create, track, and manage tickets through various stages.
 
 ## Architecture
 
-- **Frontend**: React 18, Vite, React Router DOM, Recharts, custom CSS design system
-- **Backend**: Node.js + Express.js, MongoDB + Mongoose, JWT authentication, Multer file uploads
-- **Design**: Modern light theme with dark sidebar (#0f172a), indigo primary (#6366f1), Inter font, smooth animations
+### Frontend (Port 5000)
+- **React 18** with **Vite** build system
+- **Tailwind CSS** + **Radix UI** for components
+- **TanStack Query** for data fetching
+- **React Router Dom** for routing
+- **React Hook Form** + **Zod** for form validation
+- **Framer Motion** for animations
 
-## Project Structure
+### Backend (Port 3001)
+- **Node.js** + **Express 5**
+- **MongoDB** + **Mongoose** for data persistence
+- **JWT** for authentication
+- **Multer** for file uploads
+- **Bcrypt** for password hashing
 
+## Project Layout
 ```
-.
-├── src/
-│   ├── Api/                 # API service layers
-│   ├── Components/
-│   │   ├── Login/           # Login page + AuthContext
-│   │   └── MasterDash/      # Shared CRUD component (MasterPage.jsx) + master.css
-│   ├── Data/Sidebar/        # Sidebar navigation config
-│   ├── Layout/              # App shell (sidebar + topbar) — layout.css + index.jsx
-│   ├── Pages/
-│   │   ├── Dashboard/       # Dashboard with recharts (Area, Bar, Pie charts)
-│   │   ├── Master/          # Company, Priority, Designation, User, Department, TicketStatus
-│   │   └── Ticket/          # TicketList, CreateTicket, ShowTicket, WorkerDash, ClosedTicket
-│   ├── Route/               # Route constants (AuthRoutes.jsx) + App router
-│   └── index.css            # Global CSS tokens + animations
-├── server/
-│   ├── models/              # Mongoose schemas (User, Ticket, TicketStatus, etc.)
-│   ├── routes/              # Express routes — tickets.js (multer upload fixed)
-│   ├── middleware/          # auth.js JWT middleware
-│   ├── db.js                # MongoDB connection
-│   └── server.js            # Entry point (port 3001), serves /uploads static
-├── vite.config.ts           # Vite + proxy /api → :3001, /uploads → :3001
-└── package.json
+├── src/                  # React frontend
+│   ├── Api/              # API service layer
+│   ├── Components/       # Reusable UI components
+│   ├── Layout/           # Page layout wrappers
+│   ├── Pages/            # Route-level pages
+│   │   ├── Master/       # Company, Dept, Designation, User mgmt
+│   │   └── Ticket/       # Ticket CRUD and management
+│   ├── Data/             # Static config (sidebar, etc.)
+│   └── App.jsx           # Main routing
+├── server/               # Express backend
+│   ├── controllers/      # Request handlers
+│   ├── models/           # Mongoose schemas
+│   ├── routes/           # API endpoint definitions
+│   ├── middleware/        # Auth and other middleware
+│   ├── uploads/          # File upload storage
+│   ├── db.js             # MongoDB connection
+│   └── server.js         # Entry point
+├── vite.config.ts        # Vite config (proxy to :3001, host 0.0.0.0)
+├── start.sh              # Starts both server and Vite dev server
+└── package.json          # npm dependencies
 ```
 
-## Running the Application
+## Running the App
+- **Development**: `bash start.sh` (starts both backend on :3001 and frontend on :5000)
+- **Frontend only**: `npm run dev`
+- **Build**: `npm run build`
 
-The `Start application` workflow runs:
-```
-node server/server.js & npm run dev
-```
-1. Express backend on port 3001
-2. Vite dev server on port 5000 (proxies /api and /uploads to backend)
+## Environment Variables (.env)
+- `MONGO_URI` - MongoDB Atlas connection string
+- `JWT_SECRET` - JWT signing secret
+- `VITE_API_URL` - API base URL (for frontend)
 
-## Environment Variables
+## Deployment
+- **Target**: Autoscale
+- **Build**: `npm run build` (builds React frontend to `dist/`)
+- **Run**: `NODE_ENV=production node server/server.js` (Express serves static frontend + API)
 
-- `MONGO_URI` — MongoDB connection string (required, set as Replit secret)
-- `VITE_API_URL` — Must be empty string (uses Vite proxy relative URLs)
+## API Routes
+- `/api/auth` - Authentication (login/register)
+- `/api/companies` - Company management
+- `/api/users` - User management
+- `/api/departments` - Department management
+- `/api/designations` - Designation management
+- `/api/tickets` - Ticket CRUD
+- `/api/ticket-status` - Ticket status management
+- `/api/priorities` - Priority management
+- `/api/approvals` - Approval workflow
+- `/api/work-analysis` - Work analytics
+- `/api/work-logs` - Work log tracking
+- `/uploads` - Static file serving for uploads
 
-## Key Configuration
-
-- Frontend port: **5000** (webview)
-- Backend port: **3001** (internal)
-- Vite proxy: `/api/*` and `/uploads/*` → `http://localhost:3001`
-- Multer uploads: saved to `server/uploads/` (fixed from workspace root)
-
-## Test Credentials
-
-- Mobile: `1234567890`
-- Password: `123456`
-- Role: Admin User
-
-## UI Design System
-
-| Token | Value |
-|-------|-------|
-| Background | `#f8fafc` |
-| Card | `#ffffff` |
-| Sidebar | `#0f172a` (deep navy) |
-| Primary | `#6366f1` (indigo) |
-| Primary gradient | `#6366f1` → `#8b5cf6` |
-| Text | `#0f172a` |
-| Text muted | `#64748b` |
-| Border | `#e2e8f0` / `#f1f5f9` |
-| Success | `#22c55e` |
-| Warning | `#f59e0b` |
-| Danger | `#ef4444` |
-| Font | Inter, system-ui |
-
-## Dashboard Charts (recharts)
-
-- **AreaChart** — ticket activity over last 7 days
-- **PieChart** — status distribution donut
-- **BarChart** — priority breakdown
-- Status tiles grid
-- Recent tickets table (clickable → ShowTicket)
-- Team members table
+## Package Manager
+npm (package-lock.json present)
